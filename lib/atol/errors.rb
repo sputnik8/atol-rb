@@ -3,4 +3,5 @@ module Atol
   class AuthBadRequestError < StandardError; end
   class AuthUserOrPasswordError < StandardError; end
   class ConfigExpectedError < StandardError; end
+  class UnknownOperationError < StandardError; end
 end
