@@ -3,7 +3,7 @@ require './lib/atol/config'
 describe Atol::Config do
   it { expect(Atol::Config).to be_a Class }
 
-  describe 'contains all attributes' do
+  describe 'contains main attributes' do
     let(:config) do
       Atol::Config.new(overrides: {
         login: :example_login,
@@ -23,5 +23,11 @@ describe Atol::Config do
     it('#payment_address') { expect(config.payment_address).to eql :example_payment_address }
     it('#default_sno') { expect(config.default_sno).to eql :example_default_sno }
     it('#default_tax') { expect(config.default_tax).to eql :example_default_tax }
+  end
+
+  describe 'contains optional attributes' do
+    let(:config) { Atol::Config.new }
+
+    it('#req_tries_number') { expect(config.req_tries_number).to eql 3 }
   end
 end

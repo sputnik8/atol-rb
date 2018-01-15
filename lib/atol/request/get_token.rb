@@ -7,19 +7,20 @@ module Atol
     class GetToken
       PATH = '/getToken'.freeze
 
-      def initialize(context = {})
-        config = context[:config] || Atol.config
+      def initialize(config: nil)
+        @config = config || Atol.config
+        raise(Atol::ConfigExpectedError) unless @config.is_a?(Atol::Config)
 
-        if config.login.nil? || config.login.empty?
+        if @config.login.nil? || @config.login.empty?
           raise(Atol::MissingConfigError, 'login missing')
         else
-          @login = config.login
+          @login = @config.login
         end
 
-        if config.password.nil? || config.login.empty?
+        if @config.password.nil? || @config.login.empty?
           raise(Atol::MissingConfigError, 'password missing')
         else
-          @password = config.password
+          @password = @config.password
         end
       end
 
