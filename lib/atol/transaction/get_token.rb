@@ -1,4 +1,4 @@
-require 'atol'
+require 'atol/request/get_token'
 require 'atol/errors'
 
 module Atol

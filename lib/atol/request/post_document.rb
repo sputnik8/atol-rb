@@ -19,7 +19,7 @@ module Atol
 
         @url = "#{Atol::URL}"
         @url << '/'
-        @url <<  @config.group_code
+        @url <<  @config.group_code.to_s
         @url << '/'
         @url <<  operation.to_s
         @url << '?token_id='
