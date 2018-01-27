@@ -17,7 +17,7 @@ module Atol
       }
 
       def initialize(operation:, token:, body:, config:)
-        raise(Atol::ConfigExpectedError) unless @config.is_a?(Atol::Config)
+        raise(Atol::ConfigExpectedError) unless config.is_a?(Atol::Config)
         @params = Hash[operation: operation, token: token, body: body, config: config]
       end
 
