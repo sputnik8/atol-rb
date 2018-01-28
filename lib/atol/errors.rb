@@ -14,4 +14,7 @@ module Atol
   class IncomingExistExternalIdError < StandardError; end
   class GroupCodeToTokenError < StandardError; end
   class IsNullExternalIdError < StandardError; end
+
+  class EmptyClientContactError < StandardError; end
+  class EmptySellItemsError < StandardError; end
 end

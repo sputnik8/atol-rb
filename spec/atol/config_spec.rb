@@ -29,5 +29,6 @@ describe Atol::Config do
     let(:config) { Atol::Config.new }
 
     it('#req_tries_number') { expect(config.req_tries_number).to eql 3 }
+    it('#default_payment_type') { expect(config.default_payment_type).to eql 1 }
   end
 end
