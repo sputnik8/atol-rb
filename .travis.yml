@@ -6,4 +6,3 @@ before_install: bundle install
 cache: bundler
 script:
   - rspec
-  - rubocop

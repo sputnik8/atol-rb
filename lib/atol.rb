@@ -1,5 +1,7 @@
 require 'atol/version'
 require 'atol/config'
+require 'atol/request'
+require 'atol/transaction'
 
 module Atol
   URL = "https://online.atol.ru/possystem/#{Atol::Version::API}".freeze
