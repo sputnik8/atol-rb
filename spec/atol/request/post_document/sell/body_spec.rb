@@ -35,7 +35,7 @@ describe Atol::Request::PostDocument::Sell::Body do
       end
 
       it 'payments type' do
-        expect(body_hash[:payments][:type]).to eql 1
+        expect(body_hash[:receipt][:payments][0][:type]).to eql 1
       end
 
       it 'items' do
@@ -67,11 +67,11 @@ describe Atol::Request::PostDocument::Sell::Body do
 
     describe 'calculate sum' do
       it 'payments sum' do
-        expect(body_hash[:payments][:sum]).to eql 15
+        expect(body_hash[:receipt][:payments][0][:sum]).to eql 15
       end
 
       it 'total' do
-        expect(body_hash[:total]).to eql 15
+        expect(body_hash[:receipt][:total]).to eql 15
       end
     end
 

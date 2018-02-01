@@ -1,6 +1,8 @@
 require 'atol'
 require 'atol/errors'
 require 'net/http'
+require 'atol/request/post_document/item/body'
+require 'atol/request/post_document/sell/body'
 
 module Atol
   module Request
@@ -22,7 +24,7 @@ module Atol
         @url <<  @config.group_code.to_s
         @url << '/'
         @url <<  operation.to_s
-        @url << '?token_id='
+        @url << '?tokenid='
         @url << token
 
         @body = body

@@ -21,7 +21,7 @@ describe Atol::Transaction::PostDocument do
   end
 
   describe '#call' do
-    let(:url) { 'http://online.atol.ru:443/possystem/v3/example_group_code/sell?token_id=example_token_string' }
+    let(:url) { 'http://online.atol.ru/possystem/v3/example_group_code/sell?tokenid=example_token_string' }
     let(:params) do
       Hash[operation: :sell, token: token_string, body: '', config: config]
     end

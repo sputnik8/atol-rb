@@ -16,15 +16,16 @@ module Atol
         23 => Atol::IsNullExternalIdError
       }
 
-      def initialize(operation:, token:, body:, config:)
-        raise(Atol::ConfigExpectedError) unless config.is_a?(Atol::Config)
+      def initialize(operation:, token:, body:, config: nil)
+        @config = config || Atol.config
+        raise(Atol::ConfigExpectedError) unless @config.is_a?(Atol::Config)
         @params = Hash[operation: operation, token: token, body: body, config: config]
       end
 
       def call
         request = Atol::Request::PostDocument.new(params)
         response = request.call
-        encoded_body = response.body.encode(Atol::ENCODING)
+        encoded_body = response.body.force_encoding(Atol::ENCODING)
         json = JSON.parse(encoded_body)
 
         if response.code == '200' && json['error'].nil?

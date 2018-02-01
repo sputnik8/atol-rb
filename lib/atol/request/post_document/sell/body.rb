@@ -19,7 +19,7 @@ module Atol
               sum += item[:sum]
             end
 
-            @body[:total] = @body[:payments][:sum] = total
+            @body[:receipt][:total] = @body[:receipt][:payments][0][:sum] = total
             @body[:receipt][:items] = items
           end
 
@@ -41,11 +41,13 @@ module Atol
                 attributes: {
                   sno: config.default_sno
                 },
-                items: []
-              },
-              payments: {
-                sum: 0,
-                type: config.default_payment_type
+                items: [],
+                payments: [
+                  {
+                    sum: 0,
+                    type: config.default_payment_type
+                  }
+                ]
               },
               service: {
                 inn: config.inn,

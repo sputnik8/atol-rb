@@ -1,2 +1,2 @@
-require 'atol/request/get_token'
-require 'atol/request/post_document'
+require 'atol/transaction/get_token'
+require 'atol/transaction/post_document'
