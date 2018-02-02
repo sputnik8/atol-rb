@@ -30,5 +30,10 @@ describe Atol::Config do
 
     it('#req_tries_number') { expect(config.req_tries_number).to eql 3 }
     it('#default_payment_type') { expect(config.default_payment_type).to eql 1 }
+
+    it('#callback_url') do
+      config.callback_url = 'url'
+      expect(config.callback_url).to eql 'url'
+    end
   end
 end

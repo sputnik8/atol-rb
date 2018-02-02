@@ -78,5 +78,15 @@ describe Atol::Request::PostDocument::Sell::Body do
     it 'format timestamp' do
       expect(body_hash[:timestamp]).to eql timestamp.strftime('%d.%m.%Y %H:%M:%S')
     end
+
+    it 'not inject empty key when callback_url is empty' do
+      expect(body_hash[:service].keys).not_to include :callback_url
+    end
+
+    it 'inject callback_url when it exist' do
+      params[:config].callback_url = 'url'
+      expect(body_hash[:service].keys).to include :callback_url
+      expect(body_hash[:service][:callback_url]).to eql 'url'
+    end
   end
 end

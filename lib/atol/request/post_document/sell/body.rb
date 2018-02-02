@@ -14,6 +14,7 @@ module Atol
             @body[:external_id] = external_id
             @body[:receipt][:attributes][:email] = email unless email.empty?
             @body[:receipt][:attributes][:phone] = phone unless phone.empty?
+            @body[:service][:callback_url] = @config.callback_url if @config.callback_url
 
             total = items.inject(0) do |sum, item|
               sum += item[:sum]

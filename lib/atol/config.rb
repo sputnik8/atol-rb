@@ -12,6 +12,7 @@ module Atol
                 :payment_address,
                 :default_sno,
                 :default_tax,
+                :callback_url,
                 req_tries_number: DEFAULT_REQ_TRIES_NUMBER,
                 default_payment_type: DEFAULT_PAYMENT_TYPE
   end
