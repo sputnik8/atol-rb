@@ -16,10 +16,17 @@ module Atol
         23 => Atol::IsNullExternalIdError
       }
 
-      def initialize(operation:, token:, body:, config: nil)
+      def initialize(operation:, token:, body:, config: nil, req_logger: nil, res_logger: nil)
         @config = config || Atol.config
         raise(Atol::ConfigExpectedError) unless @config.is_a?(Atol::Config)
-        @params = Hash[operation: operation, token: token, body: body, config: config]
+        @params = Hash[
+          operation: operation,
+          token: token,
+          body: body,
+          config: config,
+          req_logger: req_logger,
+          res_logger: res_logger
+        ]
       end
 
       def call

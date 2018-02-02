@@ -55,11 +55,31 @@ describe Atol::Request::PostDocument do
         .to_return(status: 200, body: '', headers: {})
     end
 
-    it 'call return result of http request' do
+    it 'return result of http request' do
       params = base_params.merge(operation: :sell)
       request = described_class.new(params)
       response = request.call
       expect(response.code).to eql '200'
+    end
+
+    it 'calls loggers for request and response' do
+      req_logger_flag = 'not called'
+      res_logger_flag = 'not called'
+
+      req_logger = lambda { |req| req_logger_flag = req }
+      res_logger = lambda { |res| res_logger_flag = res }
+
+      params = base_params.merge(
+        operation: :sell,
+        req_logger: req_logger,
+        res_logger: res_logger
+      )
+
+      request = described_class.new(params)
+      response = request.call
+
+      expect(req_logger_flag).not_to eql 'not_called'
+      expect(res_logger_flag).not_to eql 'not_called'
     end
   end
 end
