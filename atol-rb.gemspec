@@ -9,7 +9,7 @@ Gem::Specification.new do |spec|
   spec.email         = ['GeorgeGorbanev@gmail.com']
 
   spec.summary       = 'ATOL KaaS client for Ruby'
-  spec.homepage      = 'https://github.com/GeorgeGorbanev/atol-rb'
+  spec.homepage      = 'https://github.com/sputnik8/atol-rb'
   spec.license       = 'MIT'
 
   spec.files         = `git ls-files -z`.split("\x0").reject do |f|

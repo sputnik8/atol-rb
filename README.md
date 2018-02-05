@@ -73,7 +73,7 @@ token = Atol::Transaction::GetToken.new.call
 
 Токен можно будет использовать в течение 24 часов после первого запроса.
 
-Сервис АТОЛ не предоставляет информации о сроке жизни токена, поэтому его механизм его кеширования полностью зависит от приложения.
+Сервис АТОЛ не предоставляет информации о сроке жизни токена, поэтому механизм его кеширования полностью зависит от приложения.
 
 ### Регистрация документа
 
@@ -208,4 +208,33 @@ Atol::Transaction::PostDocument.new(
   req_logger: lambda { |req| puts req.body },
   res_logger: lambda { |res| puts res.body }
 ).call
+```
+
+#### Коллбэк регистрации документа
+
+После отправки документа в обработку сервер АТОЛ отправит запрос с состоянием обработки документа на URL, указанный в запросе.
+
+`Atol::Request::PostDocument::Sell::Body` добавить в тело URL, если он будет указан в конфигурации.
+
+На примере Rails-приложения динамический параметр может быть добавлен при инициализации сервера:
+
+```ruby
+# config/initializers/atol.rb
+
+Rails.application.config.after_initialize do
+  Atol.config.callback_url = Rails.application.routes.url_helpers.atol_callback_url
+end
+  
+```
+
+#### Запрос статуса документа
+
+Если в течение 300 секунд не поступил запрос с состоянием документа, то необходимо запросить его через get-запрос.
+
+Для этого можно воспользоваться классом `Atol::Transaction::GetDocumentState`, достаточно передать ему токен и uuid документа:
+
+```ruby
+
+response = Atol::Transaction::GetDocumentState.new(token: token, uuid: uuid).call
+
 ```
