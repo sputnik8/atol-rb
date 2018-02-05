@@ -8,7 +8,7 @@ Gem::Specification.new do |spec|
   spec.authors       = ['GeorgeGorbanev']
   spec.email         = ['GeorgeGorbanev@gmail.com']
 
-  spec.summary       = 'ATOL API client for Ruby'
+  spec.summary       = 'ATOL KaaS client for Ruby'
   spec.homepage      = 'https://github.com/GeorgeGorbanev/atol-rb'
   spec.license       = 'MIT'
 
