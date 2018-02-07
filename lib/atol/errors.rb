@@ -24,6 +24,7 @@ module Atol
   class StateExpiredTokenError < StandardError; end
   class StateMissingUuidError < StandardError; end
   class StateNotFoundError < StandardError; end
+  class ZeroItemQuantityError < StandardError; end
 
   ERRORS = Hash[
       1 =>  BadJSONError,
@@ -43,6 +44,7 @@ module Atol
       15 => StateMissingUuidError,
       16 => StateNotFoundError,
       22 => GroupCodeToTokenError,
-      23 => IsNullExternalIdError
+      23 => IsNullExternalIdError,
+      -3804 => ZeroItemQuantityError
   ].freeze
 end

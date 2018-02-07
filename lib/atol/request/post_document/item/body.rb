@@ -8,6 +8,8 @@ module Atol
           def initialize(name:, price:, quantity: 1, config: nil)
             @config = config || Atol.config
 
+            raise Atol::ZeroItemQuantityError if quantity.to_i.zero?
+
             @body = Hash[]
             @body[:name] = name
             @body[:price] = price.to_f

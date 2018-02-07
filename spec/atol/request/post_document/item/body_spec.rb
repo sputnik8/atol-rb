@@ -32,4 +32,14 @@ describe Atol::Request::PostDocument::Item::Body do
   it 'inject config default tax' do
     expect(body_hash[:tax]).to eql :example_default_tax
   end
+
+  context 'when quantity is 0' do
+    before do
+      params[:quantity] = 0
+    end
+
+    it 'raise Atol::ZeroItemQuantityError' do
+      expect { body_hash }.to raise_error(Atol::ZeroItemQuantityError)
+    end
+  end
 end
