@@ -51,11 +51,10 @@ module Atol
                 ]
               },
               service: {
-                inn: config.inn,
+                inn: config.inn.to_s,
                 payment_address: config.payment_address
               },
-              timestamp: Time.now.strftime(Atol::TIMESTAMP_FORMAT),
-              total: 0
+              timestamp: Time.now.strftime(Atol::TIMESTAMP_FORMAT)
             ]
           end
         end

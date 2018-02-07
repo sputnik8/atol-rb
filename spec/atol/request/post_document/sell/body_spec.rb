@@ -43,7 +43,7 @@ describe Atol::Request::PostDocument::Sell::Body do
       end
 
       it 'inn' do
-        expect(body_hash[:service][:inn]).to eql :example_inn
+        expect(body_hash[:service][:inn]).to eql 'example_inn'
       end
 
       it 'payment address' do
