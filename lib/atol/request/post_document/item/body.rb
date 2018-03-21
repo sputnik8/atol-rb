@@ -14,17 +14,13 @@ module Atol
             @body[:name] = name
             @body[:price] = price.to_f
             @body[:quantity] = quantity.to_f
-            @body[:sum] = @body[:price] * @body[:quantity]
+            @body[:sum] = (@body[:price] * @body[:quantity]).to_f.round(2)
             @body[:tax] = @config.default_tax
           end
 
           def to_h
-            body.clone
+            @body.clone
           end
-
-          private
-
-          attr_reader :body
         end
       end
     end
