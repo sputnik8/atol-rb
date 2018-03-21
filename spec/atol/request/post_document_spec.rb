@@ -51,7 +51,7 @@ describe Atol::Request::PostDocument do
 
   describe '#call' do
     before do
-      stub_request(:post, 'http://online.atol.ru/possystem/v3/group_code_example/sell?tokenid=token_example')
+      stub_request(:post, 'https://online.atol.ru/possystem/v3/group_code_example/sell?tokenid=token_example')
         .to_return(status: 200, body: '', headers: {})
     end
 

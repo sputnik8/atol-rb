@@ -21,8 +21,12 @@ describe Atol::Request::GetToken do
   describe '#call return result of http request' do
     before { allow(Atol.config).to receive(:login).and_return('log') }
     before { allow(Atol.config).to receive(:password).and_return('pass') }
-    before { allow(Net::HTTP).to receive(:get_response).and_return('result') }
+    before do
+      stub_request(:get, "https://online.atol.ru/possystem/v3/getToken?login=log&pass=pass").
+        with(headers: {'Accept'=>'*/*', 'Accept-Encoding'=>'gzip;q=1.0,deflate;q=0.6,identity;q=0.3', 'User-Agent'=>'Ruby'}).
+        to_return(status: 200, body: 'result', headers: {})
+    end
 
-    it { expect(described_class.new.call).to eql 'result' }
+    it { expect(described_class.new.call.body).to eql 'result' }
   end
 end

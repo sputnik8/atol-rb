@@ -4,8 +4,7 @@ describe Atol do
   it { expect(Atol).to be_a Module }
 
   describe 'URL' do
-    let(:correct) { 'http://online.atol.ru/possystem/v3' }
-    it { expect(Atol::URL).to eql correct }
+    it { expect(Atol::URL).to eql 'https://online.atol.ru/possystem/v3' }
   end
 
   describe 'ENCODING' do

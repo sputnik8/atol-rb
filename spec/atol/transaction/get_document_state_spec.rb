@@ -23,7 +23,7 @@ describe Atol::Transaction::GetDocumentState do
 
   describe '#call' do
     let(:url) do
-      'http://online.atol.ru/possystem/v3/example_group_code/report/example_uuid?tokenid=example_token'
+      'https://online.atol.ru/possystem/v3/example_group_code/report/example_uuid?tokenid=example_token'
     end
 
     let(:params) do

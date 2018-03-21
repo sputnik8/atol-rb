@@ -28,7 +28,9 @@ module Atol
         uri = URI(Atol::URL + PATH)
         uri.query = URI.encode_www_form(login: login, pass: password)
 
-        Net::HTTP.get_response(uri)
+        http = Net::HTTP.new(uri.host, uri.port)
+        http.use_ssl = true
+        http.get(uri.request_uri)
       end
 
       private
