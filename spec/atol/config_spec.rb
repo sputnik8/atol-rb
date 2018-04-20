@@ -12,7 +12,8 @@ describe Atol::Config do
         group_code: :example_group_code,
         payment_address: :example_payment_address,
         default_sno: :example_default_sno,
-        default_tax: :example_default_tax
+        default_tax: :example_default_tax,
+        http_client: :example_http_client
       })
     end
 
@@ -23,6 +24,7 @@ describe Atol::Config do
     it('#payment_address') { expect(config.payment_address).to eql :example_payment_address }
     it('#default_sno') { expect(config.default_sno).to eql :example_default_sno }
     it('#default_tax') { expect(config.default_tax).to eql :example_default_tax }
+    it('#http_client') { expect(config.http_client).to eql :example_http_client }
   end
 
   describe 'contains optional attributes' do
@@ -30,6 +32,7 @@ describe Atol::Config do
 
     it('#req_tries_number') { expect(config.req_tries_number).to eql 3 }
     it('#default_payment_type') { expect(config.default_payment_type).to eql 1 }
+    it('#http_client') { expect(config.http_client.name).to eql 'Net::HTTP' }
 
     it('#callback_url') do
       config.callback_url = 'url'

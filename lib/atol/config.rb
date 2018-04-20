@@ -1,10 +1,8 @@
 require 'anyway'
+require 'net/http'
 
 module Atol
   class Config < Anyway::Config
-    DEFAULT_REQ_TRIES_NUMBER = 3
-    DEFAULT_PAYMENT_TYPE = 1
-
     attr_config :login,
                 :password,
                 :inn,
@@ -13,7 +11,8 @@ module Atol
                 :default_sno,
                 :default_tax,
                 :callback_url,
-                req_tries_number: DEFAULT_REQ_TRIES_NUMBER,
-                default_payment_type: DEFAULT_PAYMENT_TYPE
+                req_tries_number: 3,
+                default_payment_type: 1,
+                http_client: Net::HTTP
   end
 end

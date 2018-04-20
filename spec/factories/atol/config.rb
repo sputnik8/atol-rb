@@ -10,7 +10,8 @@ module Atol
         group_code: :example_group_code,
         payment_address: :example_payment_address,
         default_sno: :example_default_sno,
-        default_tax: :example_default_tax
+        default_tax: :example_default_tax,
+        http_client: Net::HTTP
       })
     end
   end

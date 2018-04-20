@@ -1,6 +1,5 @@
 require 'atol'
 require 'atol/errors'
-require 'net/http'
 require 'atol/request/post_document/item/body'
 require 'atol/request/post_document/sell/body'
 
@@ -21,18 +20,19 @@ module Atol
         @body = body
         @req_logger = req_logger
         @res_logger = res_logger
+        @http_client = @config.http_client
       end
 
       def call
         uri = URI(url)
-        req = Net::HTTP::Post.new(uri, HEADERS)
+        req = @http_client::Post.new(uri, HEADERS)
         req.body = body
 
         if req_logger.respond_to?(:call)
           req_logger.call(req)
         end
 
-        res = Net::HTTP.start(uri.hostname, uri.port, use_ssl: true) do |http|
+        res = @http_client.start(uri.hostname, uri.port, use_ssl: true) do |http|
           http.request(req)
         end
 

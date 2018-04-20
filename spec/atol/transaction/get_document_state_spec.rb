@@ -39,6 +39,7 @@ describe Atol::Transaction::GetDocumentState do
           headers: {},
           body: { uuid: uuid, error: nil }.to_json
         )
+        allow(Atol.config).to receive(:http_client).and_return(Net::HTTP)
       end
 
       it 'returns response body' do
@@ -59,6 +60,7 @@ describe Atol::Transaction::GetDocumentState do
               }
             }.to_json
         )
+        allow(Atol.config).to receive(:http_client).and_return(Net::HTTP)
       end
 
       it 'returns response body' do
@@ -78,6 +80,7 @@ describe Atol::Transaction::GetDocumentState do
             }
           }.to_json
         )
+        allow(Atol.config).to receive(:http_client).and_return(Net::HTTP)
       end
 
       it 'returns response body' do
@@ -97,6 +100,7 @@ describe Atol::Transaction::GetDocumentState do
             }
           }.to_json
         )
+        allow(Atol.config).to receive(:http_client).and_return(Net::HTTP)
       end
 
       it 'returns response body' do
@@ -116,6 +120,7 @@ describe Atol::Transaction::GetDocumentState do
             }
           }.to_json
         )
+        allow(Atol.config).to receive(:http_client).and_return(Net::HTTP)
       end
 
       it 'returns response body' do

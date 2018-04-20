@@ -1,10 +1,15 @@
-require 'net/http'
 require './lib/atol/request/post_document'
 
 describe Atol::Request::PostDocument do
   it { expect(described_class).to be_a Class }
 
-  let(:config) { Atol::Config.new(overrides: { group_code: 'group_code_example' }) }
+  let(:config) do
+    Atol::Config.new(overrides: {
+      group_code: 'group_code_example',
+      http_client: Net::HTTP
+    })
+  end
+
   let(:token) { 'token_example' }
   let(:body) { '{"json": "example"}' }
   let(:base_params) { Hash[token: token, body: body, config: config] }

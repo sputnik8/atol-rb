@@ -1,6 +1,5 @@
 require 'atol'
 require 'atol/errors'
-require 'net/http'
 
 module Atol
   module Request
@@ -22,13 +21,15 @@ module Atol
         else
           @password = @config.password
         end
+
+        @http_client = @config.http_client
       end
 
       def call
         uri = URI(Atol::URL + PATH)
         uri.query = URI.encode_www_form(login: login, pass: password)
 
-        http = Net::HTTP.new(uri.host, uri.port)
+        http = @http_client.new(uri.host, uri.port)
         http.use_ssl = true
         http.get(uri.request_uri)
       end

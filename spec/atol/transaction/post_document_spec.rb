@@ -1,4 +1,3 @@
-require 'webmock/rspec'
 require './lib/atol/transaction/post_document'
 
 describe Atol::Transaction::PostDocument do

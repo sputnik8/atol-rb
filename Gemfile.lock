@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    atol (0.2)
+    atol (0.3)
       anyway_config (~> 1.0)
 
 GEM
@@ -80,4 +80,4 @@ DEPENDENCIES
   webmock (~> 3.0)
 
 BUNDLED WITH
-   1.15.1
+   1.16.1

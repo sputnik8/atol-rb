@@ -24,7 +24,8 @@ describe Atol::Transaction::GetToken do
     let(:config) do
       Atol::Config.new(overrides: {
         login: 'example_login',
-        password: 'example_password'
+        password: 'example_password',
+        http_client: Net::HTTP
       })
     end
 
@@ -53,6 +54,7 @@ describe Atol::Transaction::GetToken do
             headers: {},
             body: { code: 19 }.to_json
           })
+          allow(Atol.config).to receive(:http_client).and_return(Net::HTTP)
         end
 
         it do
@@ -68,6 +70,7 @@ describe Atol::Transaction::GetToken do
             headers: {},
             body: { code: 17 }.to_json
           })
+          allow(Atol.config).to receive(:http_client).and_return(Net::HTTP)
         end
 
         it do

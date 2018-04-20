@@ -11,12 +11,13 @@ module Atol
         raise(Atol::MissingConfigError, 'group_code missing') if @config.group_code.nil?
 
         @url = "#{Atol::URL}/#{@config.group_code}/report/#{uuid}?tokenid=#{token}"
+        @http_client = @config.http_client
       end
 
       def call
         uri = URI(url)
 
-        http = Net::HTTP.new(uri.host, uri.port)
+        http = @http_client.new(uri.host, uri.port)
         http.use_ssl = true
         http.get(uri.request_uri)
       end

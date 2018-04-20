@@ -1,5 +1,5 @@
 ![ruby-logo](https://www.ruby-lang.org/images/header-ruby-logo.png)
-![atol-logo](http://www.atol.ru/site_styles/img/logo-red.png) 
+![atol-logo](http://www.atol.ru/site_styles/img/logo-red.png)
 
 [![Gem Version](https://badge.fury.io/rb/atol.svg)](https://badge.fury.io/rb/atol) [![BuildStatus](https://travis-ci.org/GeorgeGorbanev/atol-rb.png)](https://travis-ci.org/GeorgeGorbanev/atol-rb) [![Maintainability](https://api.codeclimate.com/v1/badges/8c702db502a7a6abdcba/maintainability)](https://codeclimate.com/github/GeorgeGorbanev/atol-rb/maintainability) [![Coverage Status](https://coveralls.io/repos/github/GeorgeGorbanev/atol-rb/badge.svg?branch=master)](https://coveralls.io/github/GeorgeGorbanev/atol-rb?branch=master)
 
@@ -9,7 +9,7 @@
 
 ##### Совместимость
 
-Для корректной работы необходим интерпретатор Руби версии 2.2 и выше. Пакет работает с версией протокола v3. 
+Для корректной работы необходим интерпретатор Руби версии 2.2 и выше. Пакет работает с версией протокола v3.
 
 
 ## Использование
@@ -23,7 +23,7 @@ gem 'atol'
 ```
 И запустить команду:
 
-``` 
+```
 $ bundle install
 ```
 ### Конфигурация
@@ -48,7 +48,7 @@ ATOL_GROUP_CODE=example-group-code
 
 ```ruby
 # config/initializers/atol.rb
- 
+
 Rails.application.config.after_initialize do
   Atol.config.tap do |config|
     config.inn             = '123456789010'
@@ -60,7 +60,17 @@ Rails.application.config.after_initialize do
 end
 ```
 
-Для класса конфигурации используется класс из гема [anyway-config](https://github.com/palkan/anyway_config). Другие способы задания конфигурации можно найти в его документации. 
+Для объектов конфигурации используется класс унаследованный от класса из гема [anyway-config](https://github.com/palkan/anyway_config). Другие способы задания конфигурации можно найти в его документации.
+
+#### Прокси
+
+Объект конфигурации позволяет задать прокси для http-запросов:
+
+``` ruby
+  uri = URI('http://example-proxy.com')
+  proxy = Net::HTTP.Proxy(uri.host, uri.port)
+  Atol.config.http_client = proxy
+```
 
 ### Получение токена
 
@@ -81,7 +91,7 @@ token = Atol::Transaction::GetToken.new.call
 
 Тело запроса должно соответствовать схеме. Для упрощения кода создан класс `Atol::Request::PostDocument::Sell::Body`.
 
-Конструктор в качестве обязательных аргументов принимает `external_id`, один из аргументов `phone` или `email` и `items`. 
+Конструктор в качестве обязательных аргументов принимает `external_id`, один из аргументов `phone` или `email` и `items`.
 
 ```ruby
 body = Atol::Request::PostDocument::Sell::Body.new(
@@ -90,7 +100,7 @@ body = Atol::Request::PostDocument::Sell::Body.new(
   items: [
     ...
   ]
-).to_json 
+).to_json
 ```
 Массив `items` должен включать в себя объекты, которые так же соответствуют схеме.
 
@@ -127,7 +137,7 @@ body = Atol::Request::PostDocument::Sell::Body.new(
       price: 60
     ).to_h
   ]
-).to_json 
+).to_json
 
 ```
 Результат:
@@ -224,7 +234,7 @@ Atol::Transaction::PostDocument.new(
 Rails.application.config.after_initialize do
   Atol.config.callback_url = Rails.application.routes.url_helpers.atol_callback_url
 end
-  
+
 ```
 
 #### Запрос статуса документа
