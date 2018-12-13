@@ -1,6 +1,6 @@
 module Atol
   module Version
-    API = 'v3'.freeze
+    API = 'v4'.freeze
     LIB = '0.3'.freeze
   end
 end

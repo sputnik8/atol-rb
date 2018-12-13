@@ -17,13 +17,13 @@ describe Atol::Transaction::GetDocumentState do
     context 'with bad config' do
       let(:params) { Hash[uuid: uuid, token: token_string, config: 1] }
       let(:error) { Atol::ConfigExpectedError }
-      it { expect { described_class.new(params) }.to raise_error(error)  }
+      it { expect { described_class.new(params) }.to raise_error(error) }
     end
   end
 
   describe '#call' do
     let(:url) do
-      'https://online.atol.ru/possystem/v3/example_group_code/report/example_uuid?tokenid=example_token'
+      'https://online.atol.ru/possystem/v4/example_group_code/report/example_uuid'
     end
 
     let(:params) do
@@ -34,11 +34,14 @@ describe Atol::Transaction::GetDocumentState do
 
     context 'when response is 200 without error' do
       before do
-        stub_request(:get, url).to_return(
-          status: 200,
-          headers: {},
-          body: { uuid: uuid, error: nil }.to_json
-        )
+        stub_request(:get, url)
+          .with(headers: { 'Token' => token_string })
+          .to_return(
+            status: 200,
+            headers: {},
+            body: { uuid: uuid, error: nil }.to_json
+          )
+
         allow(Atol.config).to receive(:http_client).and_return(Net::HTTP)
       end
 
@@ -50,7 +53,9 @@ describe Atol::Transaction::GetDocumentState do
 
     context 'when response is 400 with error 8' do
       before do
-        stub_request(:get, url).to_return(
+        stub_request(:get, url)
+          .with(headers: { 'Token' => token_string })
+          .to_return(
             status: 400,
             headers: {},
             body: {
@@ -59,7 +64,7 @@ describe Atol::Transaction::GetDocumentState do
                 code: 8
               }
             }.to_json
-        )
+          )
         allow(Atol.config).to receive(:http_client).and_return(Net::HTTP)
       end
 
@@ -70,16 +75,19 @@ describe Atol::Transaction::GetDocumentState do
 
     context 'when response is 400 with error 9' do
       before do
-        stub_request(:get, url).to_return(
-          status: 400,
-          headers: {},
-          body: {
-            uuid: uuid,
-            error: {
-              code: 9
-            }
-          }.to_json
-        )
+        stub_request(:get, url)
+          .with(headers: { 'Token' => token_string })
+          .to_return(
+            status: 400,
+            headers: {},
+            body: {
+              uuid: uuid,
+              error: {
+                code: 9
+              }
+            }.to_json
+          )
+
         allow(Atol.config).to receive(:http_client).and_return(Net::HTTP)
       end
 
@@ -90,16 +98,19 @@ describe Atol::Transaction::GetDocumentState do
 
     context 'when response is 401 with error 11' do
       before do
-        stub_request(:get, url).to_return(
-          status: 401,
-          headers: {},
-          body: {
-            uuid: uuid,
-            error: {
-              code: 11
-            }
-          }.to_json
-        )
+        stub_request(:get, url)
+          .with(headers: { 'Token' => token_string })
+          .to_return(
+            status: 401,
+            headers: {},
+            body: {
+              uuid: uuid,
+              error: {
+                code: 11
+              }
+            }.to_json
+          )
+
         allow(Atol.config).to receive(:http_client).and_return(Net::HTTP)
       end
 
@@ -110,16 +121,19 @@ describe Atol::Transaction::GetDocumentState do
 
     context 'when response is 401 with error 12' do
       before do
-        stub_request(:get, url).to_return(
-          status: 401,
-          headers: {},
-          body: {
-            uuid: uuid,
-            error: {
-              code: 12
-            }
-          }.to_json
-        )
+        stub_request(:get, url)
+          .with(headers: { 'Token' => token_string })
+          .to_return(
+            status: 401,
+            headers: {},
+            body: {
+              uuid: uuid,
+              error: {
+                code: 12
+              }
+            }.to_json
+          )
+
         allow(Atol.config).to receive(:http_client).and_return(Net::HTTP)
       end
 

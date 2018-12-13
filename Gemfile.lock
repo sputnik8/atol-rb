@@ -11,6 +11,7 @@ GEM
       public_suffix (>= 2.0.2, < 4.0)
     anyway_config (1.1.3)
     ast (2.3.0)
+    byebug (10.0.2)
     coveralls (0.8.21)
       json (>= 1.8, < 3)
       simplecov (~> 0.14.1)
@@ -73,6 +74,7 @@ PLATFORMS
 DEPENDENCIES
   atol!
   bundler (~> 1.15)
+  byebug
   coveralls
   rake (~> 10.0)
   rspec (~> 3.0)
@@ -80,4 +82,4 @@ DEPENDENCIES
   webmock (~> 3.0)
 
 BUNDLED WITH
-   1.16.1
+   1.16.4

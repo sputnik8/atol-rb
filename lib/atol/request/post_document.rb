@@ -7,7 +7,7 @@ module Atol
   module Request
     class PostDocument
       OPERATIONS = %i[sell sell_refund sell_correction buy buy_refund buy_correction].freeze
-      HEADERS = { 'Content-Type' => 'application/json' }.freeze
+      HEADERS = { 'Content-Type' => 'application/json; charset=utf-8' }.freeze
 
       def initialize(operation:, token:, body:, config: nil, req_logger: nil, res_logger: nil)
         @config = config || Atol.config
@@ -16,7 +16,8 @@ module Atol
         raise(Atol::MissingConfigError, 'group_code missing') if @config.group_code.empty?
         raise(Atol::UnknownOperationError, operation.to_s) unless OPERATIONS.include?(operation.to_sym)
 
-        @url = "#{Atol::URL}/#{@config.group_code}/#{operation}?tokenid=#{token}"
+        @url = "#{Atol::URL}/#{@config.group_code}/#{operation}"
+        @token = token
         @body = body
         @req_logger = req_logger
         @res_logger = res_logger
@@ -24,28 +25,21 @@ module Atol
       end
 
       def call
-        uri = URI(url)
-        req = @http_client::Post.new(uri, HEADERS)
-        req.body = body
+        uri = URI(@url)
+        req_headers = HEADERS.merge(Token: @token)
+        req = @http_client::Post.new(uri, req_headers)
+        req.body = @body
 
-        if req_logger.respond_to?(:call)
-          req_logger.call(req)
-        end
+        @req_logger.call(req) if @req_logger.respond_to?(:call)
 
         res = @http_client.start(uri.hostname, uri.port, use_ssl: true) do |http|
           http.request(req)
         end
-
-        if res_logger.respond_to?(:call)
-          res_logger.call(res)
-        end
+        
+        @res_logger.call(res) if @res_logger.respond_to?(:call)
 
         res
       end
-
-      private
-
-      attr_reader :url, :body, :req_logger, :res_logger
     end
   end
 end
