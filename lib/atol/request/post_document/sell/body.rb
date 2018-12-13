@@ -8,20 +8,12 @@ module Atol
           def initialize(external_id:, phone: '', email: '', items:, config: nil)
             raise(Atol::EmptyClientContactError) if phone.empty? && email.empty?
             raise(Atol::EmptySellItemsError) if items.empty?
+            
             @config = config || Atol.config
-
-            @body = body_template
-            @body[:external_id] = external_id
-            @body[:receipt][:attributes][:email] = email unless email.empty?
-            @body[:receipt][:attributes][:phone] = phone unless phone.empty?
-            @body[:service][:callback_url] = @config.callback_url if @config.callback_url
-
-            total = items.inject(0) do |sum, item|
-              sum += item[:sum]
-            end
-
-            @body[:receipt][:total] = @body[:receipt][:payments][0][:sum] = total
-            @body[:receipt][:items] = items
+            @external_id = external_id
+            @phone = phone
+            @email = email
+            @items = items 
           end
 
           def to_h
@@ -34,28 +26,41 @@ module Atol
 
           private
 
-          attr_reader :config, :body
+          def body
+            @body ||= body_template.tap do |result|
+              result[:external_id] = @external_id
+              result[:receipt][:attributes][:email] = @email unless @email.empty?
+              result[:receipt][:attributes][:phone] = @phone unless @phone.empty?
+              result[:service][:callback_url] = @config.callback_url if @config.callback_url
+
+              total = @items.inject(0) { |sum, item| sum += item[:sum] }
+
+              result[:receipt][:total] = total
+              result[:receipt][:payments][0][:sum] = total
+              result[:receipt][:items] = @items
+            end
+          end
 
           def body_template
-            Hash[
+            {
               receipt: {
                 attributes: {
-                  sno: config.default_sno
+                  sno: @config.default_sno
                 },
                 items: [],
                 payments: [
                   {
                     sum: 0,
-                    type: config.default_payment_type
+                    type: @config.default_payment_type
                   }
                 ]
               },
               service: {
-                inn: config.inn.to_s,
-                payment_address: config.payment_address
+                inn: @config.inn.to_s,
+                payment_address: @config.payment_address
               },
               timestamp: Time.now.strftime(Atol::TIMESTAMP_FORMAT)
-            ]
+            }
           end
         end
       end

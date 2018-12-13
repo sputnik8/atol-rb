@@ -27,16 +27,12 @@ module Atol
 
       def call
         uri = URI(Atol::URL + PATH)
-        uri.query = URI.encode_www_form(login: login, pass: password)
+        uri.query = URI.encode_www_form(login: @login, pass: @password)
 
         http = @http_client.new(uri.host, uri.port)
         http.use_ssl = true
         http.get(uri.request_uri)
       end
-
-      private
-
-      attr_reader :login, :password
     end
   end
 end
