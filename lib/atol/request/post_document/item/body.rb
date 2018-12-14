@@ -10,24 +10,28 @@ module Atol
 
             @config = config || Atol.config
             @name = name
-            @price = price
-            @quantity = quantity
+            @price = price.to_f
+            @quantity = quantity.to_f
           end
 
           def to_h
             body.clone
           end
 
+          def to_json
+            body.to_json
+          end
+
           private
 
           def body
-            @body ||= {}.tap do |result|
-              result[:name] = @name
-              result[:price] = @price.to_f
-              result[:quantity] = @quantity.to_f
-              result[:sum] = (result[:price] * result[:quantity]).to_f.round(2)
-              result[:tax] = @config.default_tax
-            end
+            @body ||= {
+              name: @name,
+              price: @price,
+              quantity: @quantity,
+              sum: (@price * @quantity).round(2),
+              tax: @config.default_tax
+            }
           end
         end
       end

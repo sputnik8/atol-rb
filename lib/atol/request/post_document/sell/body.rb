@@ -8,12 +8,12 @@ module Atol
           def initialize(external_id:, phone: '', email: '', items:, config: nil)
             raise(Atol::EmptyClientContactError) if phone.empty? && email.empty?
             raise(Atol::EmptySellItemsError) if items.empty?
-            
+
             @config = config || Atol.config
             @external_id = external_id
             @phone = phone
             @email = email
-            @items = items 
+            @items = items
           end
 
           def to_h
@@ -33,7 +33,7 @@ module Atol
               result[:receipt][:attributes][:phone] = @phone unless @phone.empty?
               result[:service][:callback_url] = @config.callback_url if @config.callback_url
 
-              total = @items.inject(0) { |sum, item| sum += item[:sum] }
+              total = @items.sum(0) { |item| item[:sum] }
 
               result[:receipt][:total] = total
               result[:receipt][:payments][0][:sum] = total

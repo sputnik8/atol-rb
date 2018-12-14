@@ -15,8 +15,7 @@ module Atol
 
       def call
         http_client = @config.http_client
-        url = "#{Atol::URL}/#{@config.group_code}/report/#{@uuid}"
-        uri = URI(url)
+        uri = URI("#{Atol::URL}/#{@config.group_code}/report/#{@uuid}")
         http = http_client.new(uri.host, uri.port)
         http.use_ssl = true
         http.get(uri.request_uri, 'Token' => @token)

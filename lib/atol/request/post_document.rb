@@ -16,23 +16,23 @@ module Atol
         raise(Atol::MissingConfigError, 'group_code missing') if @config.group_code.empty?
         raise(Atol::UnknownOperationError, operation.to_s) unless OPERATIONS.include?(operation.to_sym)
 
-        @url = "#{Atol::URL}/#{@config.group_code}/#{operation}"
+        @operation = operation
         @token = token
         @body = body
         @req_logger = req_logger
         @res_logger = res_logger
-        @http_client = @config.http_client
       end
 
       def call
-        uri = URI(@url)
+        http_client = @config.http_client
+        uri = URI("#{Atol::URL}/#{@config.group_code}/#{@operation}")
         req_headers = HEADERS.merge(Token: @token)
-        req = @http_client::Post.new(uri, req_headers)
+        req = http_client::Post.new(uri, req_headers)
         req.body = @body
 
         @req_logger.call(req) if @req_logger.respond_to?(:call)
 
-        res = @http_client.start(uri.hostname, uri.port, use_ssl: true) do |http|
+        res = http_client.start(uri.hostname, uri.port, use_ssl: true) do |http|
           http.request(req)
         end
         
