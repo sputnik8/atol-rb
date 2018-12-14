@@ -33,7 +33,7 @@ module Atol
               result[:receipt][:attributes][:phone] = @phone unless @phone.empty?
               result[:service][:callback_url] = @config.callback_url if @config.callback_url
 
-              total = @items.sum(0) { |item| item[:sum] }
+              total = @items.inject(0) { |sum, item| sum += item[:sum] }
 
               result[:receipt][:total] = total
               result[:receipt][:payments][0][:sum] = total
