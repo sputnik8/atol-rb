@@ -1,7 +1,7 @@
 ![ruby-logo](https://www.ruby-lang.org/images/header-ruby-logo.png)
 ![atol-logo](http://www.atol.ru/site_styles/img/logo-red.png)
 
-[![Gem Version](https://badge.fury.io/rb/atol.svg)](https://badge.fury.io/rb/atol) [![BuildStatus](https://travis-ci.org/GeorgeGorbanev/atol-rb.png)](https://travis-ci.org/GeorgeGorbanev/atol-rb) [![Maintainability](https://api.codeclimate.com/v1/badges/8c702db502a7a6abdcba/maintainability)](https://codeclimate.com/github/GeorgeGorbanev/atol-rb/maintainability) [![Coverage Status](https://coveralls.io/repos/github/GeorgeGorbanev/atol-rb/badge.svg?branch=master)](https://coveralls.io/github/GeorgeGorbanev/atol-rb?branch=master)
+[![Gem Version](https://badge.fury.io/rb/atol.svg)](https://badge.fury.io/rb/atol) [![BuildStatus](https://travis-ci.org/sputnik8/atol-rb.png)](https://api.travis-ci.org/sputnik8/atol-rb.png) [![Maintainability](https://api.codeclimate.com/v1/badges/fb0179622d762c8157ba/maintainability)](https://codeclimate.com/github/sputnik8/atol-rb/maintainability) [![Coverage Status](https://coveralls.io/repos/github/sputnik8/atol-rb/badge.svg?branch=master)](https://coveralls.io/github/sputnik8/atol-rb?branch=master)
 
 # atol-rb
 
