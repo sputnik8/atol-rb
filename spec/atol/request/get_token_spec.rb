@@ -19,7 +19,7 @@ describe Atol::Request::GetToken do
 
   describe '#call return result of http request' do
     before do
-      stub_request(:get, "https://online.atol.ru/possystem/v3/getToken?login=log&pass=pass").
+      stub_request(:get, "https://online.atol.ru/possystem/v4/getToken?login=log&pass=pass").
         with(headers: {'Accept'=>'*/*', 'Accept-Encoding'=>'gzip;q=1.0,deflate;q=0.6,identity;q=0.3', 'User-Agent'=>'Ruby'}).
         to_return(status: 200, body: 'result', headers: {})
 

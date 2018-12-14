@@ -7,18 +7,18 @@ module Atol
       def initialize(operation:, token:, body:, config: nil, req_logger: nil, res_logger: nil)
         @config = config || Atol.config
         raise(Atol::ConfigExpectedError) unless @config.is_a?(Atol::Config)
-        @params = Hash[
+        @params = {
           operation: operation,
           token: token,
           body: body,
           config: config,
           req_logger: req_logger,
           res_logger: res_logger
-        ]
+        }
       end
 
       def call
-        request = Atol::Request::PostDocument.new(params)
+        request = Atol::Request::PostDocument.new(@params)
         response = request.call
         encoded_body = response.body.force_encoding(Atol::ENCODING)
         json = JSON.parse(encoded_body)
@@ -31,10 +31,6 @@ module Atol
           raise(encoded_body)
         end
       end
-
-      private
-
-      attr_reader :params
     end
   end
 end

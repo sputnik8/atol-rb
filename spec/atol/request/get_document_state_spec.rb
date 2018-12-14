@@ -15,9 +15,9 @@ describe Atol::Request::GetDocumentState do
 
   describe '#call return result of http request' do
     before do
-      stub_request(:get, "https://online.atol.ru/possystem/v3/123456/report/123?tokenid=456").
-        with(headers: {'Accept'=>'*/*', 'Accept-Encoding'=>'gzip;q=1.0,deflate;q=0.6,identity;q=0.3', 'User-Agent'=>'Ruby'}).
-        to_return(status: 200, body: 'result', headers: {})
+      stub_request(:get, "https://online.atol.ru/possystem/v4/123456/report/123")
+        .with(headers: { 'Token' => '456' })
+        .to_return(status: 200, body: 'result', headers: {})
 
       allow(Atol.config).to receive(:group_code).and_return('123456')
       allow(Atol.config).to receive(:http_client).and_return(Net::HTTP)

@@ -7,11 +7,11 @@ module Atol
       def initialize(uuid:, token:, config: nil)
         @config = config || Atol.config
         raise(Atol::ConfigExpectedError) unless @config.is_a?(Atol::Config)
-        @params = Hash[uuid: uuid, token: token, config: @config]
+        @params = { uuid: uuid, token: token, config: @config }
       end
 
       def call
-        request = Atol::Request::GetDocumentState.new(params)
+        request = Atol::Request::GetDocumentState.new(@params)
         response = request.call
         encoded_body = response.body.force_encoding(Atol::ENCODING)
         json = JSON.parse(encoded_body)
@@ -24,10 +24,6 @@ module Atol
           raise(encoded_body)
         end
       end
-
-      private
-
-      attr_reader :params
     end
   end
 end
