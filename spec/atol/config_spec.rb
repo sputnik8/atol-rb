@@ -13,7 +13,8 @@ describe Atol::Config do
         payment_address: :example_payment_address,
         default_sno: :example_default_sno,
         default_tax: :example_default_tax,
-        http_client: :example_http_client
+        http_client: :example_http_client,
+        company_email: :example_company_email
       })
     end
 
@@ -25,6 +26,7 @@ describe Atol::Config do
     it('#default_sno') { expect(config.default_sno).to eql :example_default_sno }
     it('#default_tax') { expect(config.default_tax).to eql :example_default_tax }
     it('#http_client') { expect(config.http_client).to eql :example_http_client }
+    it('#company_email') { expect(config.company_email).to eql :example_company_email }
   end
 
   describe 'contains optional attributes' do

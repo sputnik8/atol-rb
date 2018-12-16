@@ -29,8 +29,8 @@ module Atol
           def body
             @body ||= body_template.tap do |result|
               result[:external_id] = @external_id
-              result[:receipt][:attributes][:email] = @email unless @email.empty?
-              result[:receipt][:attributes][:phone] = @phone unless @phone.empty?
+              result[:receipt][:client][:email] = @email unless @email.empty?
+              result[:receipt][:client][:phone] = @phone unless @phone.empty?
               result[:service][:callback_url] = @config.callback_url if @config.callback_url
 
               total = @items.inject(0) { |sum, item| sum += item[:sum] }
@@ -44,8 +44,12 @@ module Atol
           def body_template
             {
               receipt: {
-                attributes: {
-                  sno: @config.default_sno
+                client: {},
+                company: {
+                  inn: @config.inn.to_s,
+                  sno: @config.default_sno,
+                  payment_address: @config.payment_address,
+                  email: @config.company_email
                 },
                 items: [],
                 payments: [
@@ -55,10 +59,7 @@ module Atol
                   }
                 ]
               },
-              service: {
-                inn: @config.inn.to_s,
-                payment_address: @config.payment_address
-              },
+              service: {},
               timestamp: Time.now.strftime(Atol::TIMESTAMP_FORMAT)
             }
           end

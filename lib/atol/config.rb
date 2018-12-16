@@ -11,6 +11,7 @@ module Atol
                 :default_sno,
                 :default_tax,
                 :callback_url,
+                :company_email,
                 req_tries_number: 3,
                 default_payment_type: 1,
                 http_client: Net::HTTP

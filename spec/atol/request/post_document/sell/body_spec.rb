@@ -31,7 +31,7 @@ describe Atol::Request::PostDocument::Sell::Body do
 
     describe 'injects config variables' do
       it 'sno' do
-        expect(body_hash[:receipt][:attributes][:sno]).to eql :example_default_sno
+        expect(body_hash[:receipt][:company][:sno]).to eql :example_default_sno
       end
 
       it 'payments type' do
@@ -43,11 +43,11 @@ describe Atol::Request::PostDocument::Sell::Body do
       end
 
       it 'inn' do
-        expect(body_hash[:service][:inn]).to eql 'example_inn'
+        expect(body_hash[:receipt][:company][:inn]).to eql 'example_inn'
       end
 
       it 'payment address' do
-        expect(body_hash[:service][:payment_address]).to eql :example_payment_address
+        expect(body_hash[:receipt][:company][:payment_address]).to eql :example_payment_address
       end
     end
 
@@ -57,11 +57,11 @@ describe Atol::Request::PostDocument::Sell::Body do
       end
 
       it 'contact phone' do
-        expect(body_hash[:receipt][:attributes][:phone]).to eql '123456'
+        expect(body_hash[:receipt][:client][:phone]).to eql '123456'
       end
 
       it 'contact email' do
-        expect(body_hash[:receipt][:attributes][:email]).to eql 'email@example.com'
+        expect(body_hash[:receipt][:client][:email]).to eql 'email@example.com'
       end
     end
 
