@@ -106,12 +106,32 @@ body = Atol::Request::PostDocument::Sell::Body.new(
 
 Для создания `items` можно использовать класс `Atol::Request::PostDocument::Item::Body`.
 
-Его конструктор принимает обязательные аргументы `name`, `price` и опциональный `quantity` (по умолчанию 1).
+Его конструктор принимает обязательные аргументы `name`, `price`, `payment_method`, `payment_object` и опциональный `quantity` (по умолчанию 1).
+
+Допустимые значения `payment_method`:
+```ruby
+[
+  'full_prepayment', 'prepayment', 'advance', 'full_payment',
+  'partial_payment', 'credit', 'credit_payment'
+]
+```
+Допустимые значения `payment_object`:
+```ruby
+[
+  'commodity', 'excise', 'job', 'service', 'gambling_bet', 'gambling_prize',
+  'lottery', 'lottery_prize', 'intellectual_activity', 'payment','agent_commission',
+  'composite', 'another'
+]
+```
+
+Например:
 
 ```ruby
 item = Atol::Request::PostDocument::Item::Body.new(
   name: 'product name',
   price: 100,
+  payment_method: 'full_payment',
+  payment_object: 'service',
   quantity: 2
 ).to_h
 ```
@@ -126,15 +146,21 @@ body = Atol::Request::PostDocument::Sell::Body.new(
     Atol::Request::PostDocument::Item::Body.new(
       name: 'number 9',
       price: 50,
+      payment_method: 'full_payment',
+      payment_object: 'service',
       quantity: 2
     ).to_h,
     Atol::Request::PostDocument::Item::Body.new(
       name: 'number 9 large',
-      price: 100
+      price: 100,
+      payment_method: 'full_payment',
+      payment_object: 'service'
     ).to_h,
     Atol::Request::PostDocument::Item::Body.new(
       name: 'number 6',
-      price: 60
+      price: 60,
+      payment_method: 'full_payment',
+      payment_object: 'service'
     ).to_h
   ]
 ).to_json
@@ -143,28 +169,28 @@ body = Atol::Request::PostDocument::Sell::Body.new(
 Результат:
 ```json
 
-{  
-  "receipt":{  
-    "attributes":{  
+{
+  "receipt":{
+    "attributes":{
       "sno":"usn_income_outcome",
       "email":"example@example.com"
     },
-    "items":[  
-      {  
+    "items":[
+      {
         "name":"number 9",
         "price":50.0,
         "quantity":2.0,
         "sum":100.0,
         "tax":"none"
       },
-      {  
+      {
         "name":"number 9 large",
         "price":100.0,
         "quantity":1.0,
         "sum":100.0,
         "tax":"none"
       },
-      {  
+      {
         "name":"number 6",
         "price":60.0,
         "quantity":1.0,
@@ -172,15 +198,15 @@ body = Atol::Request::PostDocument::Sell::Body.new(
         "tax":"none"
       }
     ],
-    "payments":[  
-      {  
+    "payments":[
+      {
         "sum":260.0,
         "type":1
       }
     ],
     "total":260.0
   },
-  "service":{  
+  "service":{
     "inn":"123456789010",
     "payment_address":"г. Москва, ул. Ленина, д.1 к.2"
   },
