@@ -3,12 +3,16 @@ require './lib/atol/request/post_document/item/body'
 describe Atol::Request::PostDocument::Item::Body do
   it { expect(described_class).to be_a Class }
 
-  let(:params) { Hash[
+  let(:params) do
+    Hash[
       name: 'item name',
       price: 100,
       quantity: 2,
-      config: Atol::Config::Factory.example
-  ]}
+      config: Atol::Config::Factory.example,
+      payment_method: 'full_payment',
+      payment_object: 'service'
+    ]
+  end
 
   let(:body_hash) { described_class.new(params).to_h }
 
@@ -24,6 +28,13 @@ describe Atol::Request::PostDocument::Item::Body do
     expect(body_hash[:quantity]).to eql 2.0
   end
 
+  it 'injects payment_method' do
+    expect(body_hash[:payment_method]).to eql 'full_payment'
+  end
+
+  it 'injects payment_object' do
+    expect(body_hash[:payment_object]).to eql 'service'
+  end
 
   it 'calculate sum in float' do
     expect(body_hash[:sum]).to eql 200.0
@@ -40,6 +51,26 @@ describe Atol::Request::PostDocument::Item::Body do
 
     it 'raise Atol::ZeroItemQuantityError' do
       expect { body_hash }.to raise_error(Atol::ZeroItemQuantityError)
+    end
+  end
+
+  context 'when bad payment_method given' do
+    before { params[:payment_method] = 'bad payment method' }
+
+    it 'raise error' do
+      expect { body_hash }.to raise_error(
+        Atol::Request::PostDocument::Item::Body::BadPaymentMethodError
+      )
+    end
+  end
+
+  context 'when bad payment_object given' do
+    before { params[:payment_object] = 'bad payment object' }
+
+    it 'raise error' do
+      expect { body_hash }.to raise_error(
+        Atol::Request::PostDocument::Item::Body::BadPaymentObjectError
+      )
     end
   end
 end
