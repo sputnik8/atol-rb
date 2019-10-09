@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'net/http'
 require './lib/atol/request/get_document_state'
 

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require './lib/atol/transaction/post_document'
 
 describe Atol::Transaction::PostDocument do

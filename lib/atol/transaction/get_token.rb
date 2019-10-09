@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'atol/request/get_token'
 require 'atol/errors'
 

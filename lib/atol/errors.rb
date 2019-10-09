@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Atol
   class MissingConfigError < StandardError; end
   class AuthBadRequestError < StandardError; end

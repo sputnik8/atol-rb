@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'atol'
 require 'atol/errors'
 require 'net/http'
