@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require './lib/atol/request/get_token'
 
 describe Atol::Request::GetToken do

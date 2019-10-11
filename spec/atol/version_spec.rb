@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require './lib/atol/version'
 
 describe Atol::Version do

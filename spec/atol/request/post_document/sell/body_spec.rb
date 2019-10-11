@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require './lib/atol/request/post_document/sell/body'
 
 describe Atol::Request::PostDocument::Sell::Body do

@@ -1,10 +1,12 @@
+# frozen_string_literal: true
+
 require 'atol'
 require 'atol/errors'
 
 module Atol
   module Request
     class GetToken
-      PATH = '/getToken'.freeze
+      PATH = '/getToken'
 
       def initialize(config: nil)
         @config = config || Atol.config

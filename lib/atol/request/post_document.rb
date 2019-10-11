@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'atol'
 require 'atol/errors'
 require 'atol/request/post_document/item/body'
@@ -35,7 +37,7 @@ module Atol
         res = http_client.start(uri.hostname, uri.port, use_ssl: true) do |http|
           http.request(req)
         end
-        
+
         @res_logger.call(res) if @res_logger.respond_to?(:call)
 
         res

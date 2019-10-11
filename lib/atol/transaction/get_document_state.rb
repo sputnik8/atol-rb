@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'atol/request/get_document_state'
 require 'atol/errors'
 
