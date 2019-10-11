@@ -2,7 +2,10 @@ sudo: false
 language: ruby
 rvm:
   - 2.5.0
-before_install: bundle install
+before_install:
+  - gem uninstall -v '>= 2' -i $(rvm gemdir)@global -ax bundler || true
+  - gem install -v 1.16.4 bundler --no-rdoc --no-ri
+  - bundle install
 cache: bundler
 script:
   - rspec
