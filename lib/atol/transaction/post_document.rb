@@ -22,7 +22,7 @@ module Atol
       def call
         request = Atol::Request::PostDocument.new(@params)
         response = request.call
-        encoded_body = response.body.force_encoding(Atol::ENCODING)
+        encoded_body = response.body.dup.force_encoding(Atol::ENCODING)
         json = JSON.parse(encoded_body)
 
         if response.code == '200' && json['error'].nil?
