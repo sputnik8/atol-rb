@@ -48,37 +48,51 @@ describe Atol::Transaction::GetToken do
       end
     end
 
-    context 'when response is 400' do
-      context 'when response body code 19' do
-        before do
-          stub_request(:get, /online.atol.ru/).to_return({
-            status: 400,
-            headers: {},
-            body: { code: 19 }.to_json
-          })
-          allow(Atol.config).to receive(:http_client).and_return(Net::HTTP)
-        end
-
-        it do
-          transaction = described_class.new(config: config)
-          expect { transaction.call }.to raise_error Atol::AuthUserOrPasswordError
-        end
+    context 'when response code is 400' do
+      before do
+        stub_request(:get, /online.atol.ru/).to_return({
+          status: 400,
+          headers: {},
+          body: { code: 17 }.to_json
+        })
+        allow(Atol.config).to receive(:http_client).and_return(Net::HTTP)
       end
 
-      context 'when response body code 17' do
-        before do
-          stub_request(:get, /online.atol.ru/).to_return({
-            status: 400,
-            headers: {},
-            body: { code: 17 }.to_json
-          })
-          allow(Atol.config).to receive(:http_client).and_return(Net::HTTP)
-        end
+      it do
+        transaction = described_class.new(config: config)
+        expect { transaction.call }.to raise_error Atol::AuthBadRequestError
+      end
+    end
 
-        it do
-          transaction = described_class.new(config: config)
-          expect { transaction.call }.to raise_error Atol::AuthBadRequestError
-        end
+    context 'when response code is 401' do
+      before do
+        stub_request(:get, /online.atol.ru/).to_return({
+          status: 401,
+          headers: {},
+          body: {}.to_json
+        })
+        allow(Atol.config).to receive(:http_client).and_return(Net::HTTP)
+      end
+
+      it do
+        transaction = described_class.new(config: config)
+        expect { transaction.call }.to raise_error Atol::AuthUserOrPasswordError
+      end
+    end
+
+    context 'when response code 415' do
+      before do
+        stub_request(:get, /online.atol.ru/).to_return({
+          status: 415,
+          headers: {},
+          body: {}.to_json
+        })
+        allow(Atol.config).to receive(:http_client).and_return(Net::HTTP)
+      end
+
+      it do
+        transaction = described_class.new(config: config)
+        expect { transaction.call }.to raise_error RuntimeError
       end
     end
   end

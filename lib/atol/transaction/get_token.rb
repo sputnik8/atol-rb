@@ -15,25 +15,21 @@ module Atol
         @config.req_tries_number.times do |i|
           request = Atol::Request::GetToken.new(config: @config)
           response = request.call
-          encoded_body = response.body.encode(Atol::ENCODING)
+          encoded_body = response.body.dup.force_encoding(Atol::ENCODING)
           json = JSON.parse(encoded_body)
 
           case response.code
           when '200'
             return json['token']
           when '400'
-            case json['code']
-            when 19
-              raise Atol::AuthUserOrPasswordError
-            when 17
-              raise Atol::AuthBadRequestError
-            end
+            raise Atol::AuthBadRequestError
+          when '401'
+            raise Atol::AuthUserOrPasswordError
           when '500'
             next
           end
+          raise "#{response.code} #{response.body}"
         end
-
-        raise "#{response.code} #{response.body}"
       end
     end
   end
