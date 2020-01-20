@@ -12,7 +12,7 @@ module Atol
       end
 
       def call
-        @config.req_tries_number.times do |i|
+        @config.req_tries_number.times do
           request = Atol::Request::GetToken.new(config: @config)
           response = request.call
           encoded_body = response.body.dup.force_encoding(Atol::ENCODING)
