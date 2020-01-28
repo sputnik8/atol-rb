@@ -16,6 +16,7 @@ module Atol
                 :company_email,
                 req_tries_number: 3,
                 default_payment_type: 1,
-                http_client: Net::HTTP
+                http_client: Net::HTTP,
+                test: false
   end
 end
