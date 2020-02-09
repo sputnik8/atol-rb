@@ -7,10 +7,6 @@
 
 Пакет содержит набор классов для работы с [KaaS-сервисом АТОЛ-онлайн](https://online.atol.ru/) по [описанному протоколу](https://online.atol.ru/files/ffd/API_AO_v4.pdf).
 
-Это доработанная версия гема, взятая https://github.com/sputnik8/atol-rb
-
-Исправлены несколько багов, добавлен тестовый режим и обновлена документация.
-
 ##### Совместимость
 
 Для корректной работы необходим интерпретатор Руби версии 2.5. Пакет работает с версией протокола v4.
@@ -23,7 +19,7 @@
 Необходимо добавить в Gemfile проекта строку:
 
 ```ruby
-gem 'atol', git: 'https://github.com/Pserg/atol-rb', branch: 'master'
+gem 'atol'
 ```
 И запустить команду:
 
@@ -97,7 +93,7 @@ Rails.application.config.after_initialize do
     config.payment_address      = 'г. Москва, ул. Ленина, д.1 к.2'
     config.group_code           = 'example-group-code'
     config.default_sno          = 'esn'
-    config.default_tax          = 'vat18'
+    config.default_tax          = 'vat20'
     config.callback_url         = 'https://www.example.com/callback_path'
     config.company_email        = 'example@email.com'
     config.default_payment_type = '1'
