@@ -7,6 +7,7 @@ require 'atol/transaction'
 
 module Atol
   URL = "https://online.atol.ru/possystem/#{Atol::Version::API}"
+  TEST_URL = "https://testonline.atol.ru/possystem/#{Atol::Version::API}"
   ENCODING = 'utf-8'
   TIMESTAMP_FORMAT = '%d.%m.%Y %H:%M:%S'
 
@@ -15,6 +16,10 @@ module Atol
 
     def config
       @config ||= Atol::Config.new
+    end
+
+    def url
+      @url ||= @config.test ? TEST_URL : URL
     end
   end
 end

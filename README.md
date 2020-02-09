@@ -44,7 +44,7 @@ ATOL_PASSWORD=example-password
 ATOL_PAYMENT_ADDRESS="г. Москва, ул. Ленина, д.1 к.2"
 ATOL_GROUP_CODE=example-group-code
 ATOL_DEFAULT_SNO=esn
-ATOL_DEFAULT_TAX=vat18
+ATOL_DEFAULT_TAX=vat20
 ATOL_CALLBACK_URL=https://www.example.com/callback_path
 ATOL_COMPANY_EMAIL=example@email.com
 ATOL_DEFAULT_PAYMENT_TYPE=1
@@ -64,9 +64,11 @@ ATOL_DEFAULT_PAYMENT_TYPE=1
 1) "none" – без НДС;
 2) "vat0" – НДС по ставке 0%;
 3) "vat10" – НДС чека по ставке 10%;
-4) "vat18" – НДС чека по ставке 18%;
+4) "vat18" – НДС чека по ставке 18% (недоступен с 01.04.2019 );
 5) "vat110" – НДС чека по расчетной ставке 10/110;
-6) "vat118" – НДС чека по расчетной ставке 18/118.
+6) "vat118" – НДС чека по расчетной ставке 18/118 (недоступен с 01.04.2019 ).
+7) "vat20" - НДС чека по ставке 20%;
+8) "vat120" – НДС чека по расчетной ставке 20/120.
 
 `ATOL_CALLBACK_URL` - адрес, по которому сервис будет отправлять информацию после создания чека.
 
@@ -91,7 +93,7 @@ Rails.application.config.after_initialize do
     config.payment_address      = 'г. Москва, ул. Ленина, д.1 к.2'
     config.group_code           = 'example-group-code'
     config.default_sno          = 'esn'
-    config.default_tax          = 'vat18'
+    config.default_tax          = 'vat20'
     config.callback_url         = 'https://www.example.com/callback_path'
     config.company_email        = 'example@email.com'
     config.default_payment_type = '1'
@@ -100,6 +102,9 @@ end
 ```
 
 Для объектов конфигурации используется класс унаследованный от класса из гема [anyway-config](https://github.com/palkan/anyway_config). Другие способы задания конфигурации можно найти в его документации.
+
+#### Тестовый режим
+При указании в конфигурации config.test = 'true' запросы пойдут через тестовый контур. 
 
 #### Прокси
 
@@ -134,7 +139,7 @@ token = Atol::Transaction::GetToken.new.call
 
 ```ruby
 body = Atol::Request::PostDocument::Sell::Body.new(
-  external_id: 123,
+  external_id: '123',
   email: 'example@example.com',
   items: [
     ...
@@ -179,7 +184,7 @@ item = Atol::Request::PostDocument::Item::Body.new(
 
 ```ruby
 body = Atol::Request::PostDocument::Sell::Body.new(
-  external_id: 123,
+  external_id: '123',
   email: 'example@example.com',
   items: [
     Atol::Request::PostDocument::Item::Body.new(
