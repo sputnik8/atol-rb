@@ -21,6 +21,5 @@ module Atol
     def url
       @url ||= @config.test ? TEST_URL : URL
     end
-
   end
 end
