@@ -101,6 +101,34 @@ end
 
 Для объектов конфигурации используется класс унаследованный от класса из гема [anyway-config](https://github.com/palkan/anyway_config). Другие способы задания конфигурации можно найти в его документации.
 
+### Использование тестового окружения АТОЛ
+
+АТОЛ предоставляет тестовую среду для отработки интеграции: их можно найти на странице https://online.atol.ru/lib/ по второй ссылке.
+
+Сконфигурировать приложение для работы с тестовой средой можно следующим образом:
+
+```ruby
+# config/initializers/atol.rb
+
+Rails.application.config.after_initialize do
+  Atol.config.tap do |config|
+    # config.inn                  = '5544332219'
+    config.login                = 'v4-online-atol-ru'
+    config.password             = 'iGFFuihss'
+    # config.payment_address      = 'г. Москва, ул. Ленина, д.1 к.2'
+    config.group_code           = 'v4-online-atol-ru_4179'
+    # config.default_sno          = 'esn'
+    # config.default_tax          = 'vat18'
+    # config.callback_url         = 'https://www.example.com/callback_path'
+    # config.company_email        = 'example@email.com'
+    # config.default_payment_type = '1'
+    config.api_url              = 'https://testonline.atol.ru/possystem/v4/'
+  end
+end
+```
+
+Для объектов конфигурации используется класс унаследованный от класса из гема [anyway-config](https://github.com/palkan/anyway_config). Другие способы задания конфигурации можно найти в его документации.
+
 #### Прокси
 
 Объект конфигурации позволяет задать прокси для http-запросов:

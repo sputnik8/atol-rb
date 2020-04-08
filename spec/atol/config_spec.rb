@@ -16,7 +16,8 @@ describe Atol::Config do
         default_sno: :example_default_sno,
         default_tax: :example_default_tax,
         http_client: :example_http_client,
-        company_email: :example_company_email
+        company_email: :example_company_email,
+        api_url: 'example_api_url'
       })
     end
 
@@ -29,6 +30,7 @@ describe Atol::Config do
     it('#default_tax') { expect(config.default_tax).to eql :example_default_tax }
     it('#http_client') { expect(config.http_client).to eql :example_http_client }
     it('#company_email') { expect(config.company_email).to eql :example_company_email }
+    it('#api_url') { expect(config.api_url).to eql 'example_api_url' }
   end
 
   describe 'contains optional attributes' do
@@ -36,6 +38,7 @@ describe Atol::Config do
 
     it('#req_tries_number') { expect(config.req_tries_number).to eql 3 }
     it('#default_payment_type') { expect(config.default_payment_type).to eql 1 }
+    it('#api_url') { expect(config.api_url).to eql 'https://online.atol.ru/possystem/v4' }
     it('#http_client') { expect(config.http_client.name).to eql 'Net::HTTP' }
 
     it('#callback_url') do
