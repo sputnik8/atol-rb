@@ -105,29 +105,14 @@ end
 
 АТОЛ предоставляет тестовую среду для отработки интеграции. Данные для авторизации в тестовой среде можно найти в [библиотеке документации АТОЛ Онлайн](https://online.atol.ru/lib/), пункт ["Параметры тестовой среды"](https://online.atol.ru/files/ffd/test_sreda.txt)
 
-> _Внимание! При создании чеков в тестовой среде АТОЛ будет отправлять письма на электронную почту покупателя._
+URL тестовой среды необходимо указывать в конфигурации. При использовании переменных окружения вам необходимо задать переменную `ATOL_API_URL`.
 
-Сконфигурировать приложение для работы с тестовой средой можно следующим образом:
-
-```ruby
-# config/initializers/atol.rb
-
-Rails.application.config.after_initialize do
-  Atol.config.tap do |config|
-    config.inn                  = '5544332219'
-    config.login                = 'v4-online-atol-ru'
-    config.password             = 'iGFFuihss'
-    config.payment_address      = 'г. Москва, ул. Ленина, д.1 к.2'
-    config.group_code           = 'v4-online-atol-ru_4179'
-    config.default_sno          = 'esn'
-    # config.default_tax          = 'vat18'
-    # config.callback_url         = 'https://www.example.com/callback_path'
-    config.company_email        = 'example@email.com'
-    # config.default_payment_type = '1'
-    config.api_url              = 'https://testonline.atol.ru/possystem/v4/'
-  end
-end
+```bash
+# .env
+ATOL_API_URL=https://testonline.atol.ru/possystem/v4
 ```
+
+> _Внимание! При создании чеков в тестовой среде АТОЛ будет отправлять письма на электронную почту покупателя._
 
 #### Прокси
 
