@@ -5,10 +5,6 @@ require './lib/atol'
 describe Atol do
   it { expect(Atol).to be_a Module }
 
-  describe 'URL' do
-    it { expect(Atol::URL).to eql 'https://online.atol.ru/possystem/v4' }
-  end
-
   describe 'ENCODING' do
     it { expect(Atol::ENCODING).to eql 'utf-8' }
   end

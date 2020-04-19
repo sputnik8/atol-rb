@@ -27,7 +27,7 @@ module Atol
 
       def call
         http_client = @config.http_client
-        uri = URI("#{Atol::URL}/#{@config.group_code}/#{@operation}")
+        uri = URI("#{@config.api_url}/#{@config.group_code}/#{@operation}")
         req_headers = HEADERS.merge('Token' => @token)
         req = http_client::Post.new(uri, req_headers)
         req.body = @body

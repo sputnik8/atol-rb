@@ -28,7 +28,7 @@ module Atol
       end
 
       def call
-        uri = URI(Atol::URL + PATH)
+        uri = URI(@config.api_url + PATH)
         uri.query = URI.encode_www_form(login: @login, pass: @password)
 
         http = @http_client.new(uri.host, uri.port)
