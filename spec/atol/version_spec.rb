@@ -4,6 +4,6 @@ require './lib/atol/version'
 
 describe Atol::Version do
   it { expect(Atol::Version).to be_a Module }
-  it('API eql v4') { expect(Atol::Version::API).to eql 'v4' }
-  it('LIB eql 0.5.1') { expect(Atol::Version::LIB).to eql '0.5.1' }
+  it { expect(Atol::Version::API).to eq('v4') }
+  it { expect(Atol::Version::LIB).to eq('0.6') }
 end
