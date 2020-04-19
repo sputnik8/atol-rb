@@ -2,6 +2,7 @@
 
 require 'anyway'
 require 'net/http'
+require 'atol/version'
 
 module Atol
   class Config < Anyway::Config
