@@ -45,34 +45,15 @@ describe Atol::Transaction::PostDocument do
       end
     end
 
-    context 'when response is 200 and error 23' do
-      before do
-        stub_request(:post, url).to_return({
-          status: 200,
-          headers: {},
-          body: '{
-            "error": {
-              "code": 23,
-              "text": "errortext"
-            }
-          }'
-        })
-      end
-
-      it do
-        expect { transaction.call }.to raise_error(Atol::IsNullExternalIdError)
-      end
-    end
-
     context 'when response is 400' do
-      context 'when error code is 1' do
+      context 'when error code is 0' do
         before do
           stub_request(:post, url).to_return({
             status: 400,
             headers: {},
             body: '{
               "error": {
-                "code": 1,
+                "code": 0,
                 "text": "errortext"
               }
             }'
@@ -84,33 +65,14 @@ describe Atol::Transaction::PostDocument do
         end
       end
 
-      context 'when error code is 2' do
+      context 'when error code is 31' do
         before do
           stub_request(:post, url).to_return({
             status: 400,
             headers: {},
             body: '{
               "error": {
-                "code": 2,
-                "text": "errortext"
-              }
-            }'
-          })
-        end
-
-        it do
-          expect { transaction.call }.to raise_error(Atol::IncomingBadRequestError)
-        end
-      end
-
-      context 'when error code is 3' do
-        before do
-          stub_request(:post, url).to_return({
-            status: 400,
-            headers: {},
-            body: '{
-              "error": {
-                "code": 3,
+                "code": 31,
                 "text": "errortext"
               }
             }'
@@ -119,25 +81,6 @@ describe Atol::Transaction::PostDocument do
 
         it do
           expect { transaction.call }.to raise_error(Atol::IncomingOperationNotSupportError)
-        end
-      end
-
-      context 'when error code is 4' do
-        before do
-          stub_request(:post, url).to_return({
-            status: 400,
-            headers: {},
-            body: '{
-              "error": {
-                "code": 4,
-                "text": "errortext"
-              }
-            }'
-          })
-        end
-
-        it do
-          expect { transaction.call }.to raise_error(Atol::IncomingMissingTokenError)
         end
       end
 
@@ -156,18 +99,37 @@ describe Atol::Transaction::PostDocument do
         end
 
         it do
-          expect { transaction.call }.to raise_error(Atol::IncomingExistExternalIdError)
+          expect { transaction.call }.to raise_error(Atol::IncomingMissingTokenError)
         end
       end
 
-      context 'when error code is 22' do
+      context 'when error code is 33' do
         before do
           stub_request(:post, url).to_return({
             status: 400,
             headers: {},
             body: '{
               "error": {
-                "code": 22,
+                "code": 33,
+                "text": "errortext"
+              }
+            }'
+          })
+        end
+
+        it do
+          expect { transaction.call }.to raise_error(Atol::IncomingExistExternalIdError)
+        end
+      end
+
+      context 'when error code is 20' do
+        before do
+          stub_request(:post, url).to_return({
+            status: 400,
+            headers: {},
+            body: '{
+              "error": {
+                "code": 20,
                 "text": "errortext"
               }
             }'
@@ -181,33 +143,14 @@ describe Atol::Transaction::PostDocument do
     end
 
     context 'when response is 401' do
-      context 'when error code is 5' do
+      context 'when error code is 11' do
         before do
           stub_request(:post, url).to_return({
             status: 401,
             headers: {},
             body: '{
               "error": {
-                "code": 5,
-                "text": "errortext"
-              }
-            }'
-          })
-        end
-
-        it do
-          expect { transaction.call }.to raise_error(Atol::IncomingNotExistTokenError)
-        end
-      end
-
-      context 'when error code is 6' do
-        before do
-          stub_request(:post, url).to_return({
-            status: 401,
-            headers: {},
-            body: '{
-              "error": {
-                "code": 6,
+                "code": 11,
                 "text": "errortext"
               }
             }'
