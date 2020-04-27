@@ -21,12 +21,12 @@ module Atol
 
   ERRORS = Hash[
       0 =>  BadJSONError,
-      10 =>  IncomingMissingTokenError,
-      11 =>  IncomingExpiredTokenError,
+      10 => IncomingMissingTokenError,
+      11 => IncomingExpiredTokenError,
       20 => GroupCodeToTokenError,
       30 => StateMissingUuidError,
-      31 =>  IncomingOperationNotSupportError,
-      32 =>  IncomingValidationError,
+      31 => IncomingOperationNotSupportError,
+      32 => IncomingValidationError,
       33 => IncomingExistExternalIdError,
       34 => StateNotFoundError,
       -3804 => ZeroItemQuantityError
