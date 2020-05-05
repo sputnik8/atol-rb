@@ -53,7 +53,7 @@ describe Atol::Transaction::GetDocumentState do
       end
     end
 
-    context 'when response is 400 with error 8' do
+    context 'when response is 400 with error 32' do
       before do
         stub_request(:get, url)
           .with(headers: { 'Token' => token_string })
@@ -63,7 +63,7 @@ describe Atol::Transaction::GetDocumentState do
             body: {
               uuid: uuid,
               error: {
-                code: 8
+                code: 32
               }
             }.to_json
           )
@@ -72,75 +72,6 @@ describe Atol::Transaction::GetDocumentState do
 
       it 'returns response body' do
         expect { transaction.call }.to raise_error Atol::IncomingValidationError
-      end
-    end
-
-    context 'when response is 400 with error 9' do
-      before do
-        stub_request(:get, url)
-          .with(headers: { 'Token' => token_string })
-          .to_return(
-            status: 400,
-            headers: {},
-            body: {
-              uuid: uuid,
-              error: {
-                code: 9
-              }
-            }.to_json
-          )
-
-        allow(Atol.config).to receive(:http_client).and_return(Net::HTTP)
-      end
-
-      it 'returns response body' do
-        expect { transaction.call }.to raise_error Atol::IncomingQueueError
-      end
-    end
-
-    context 'when response is 401 with error 11' do
-      before do
-        stub_request(:get, url)
-          .with(headers: { 'Token' => token_string })
-          .to_return(
-            status: 401,
-            headers: {},
-            body: {
-              uuid: uuid,
-              error: {
-                code: 11
-              }
-            }.to_json
-          )
-
-        allow(Atol.config).to receive(:http_client).and_return(Net::HTTP)
-      end
-
-      it 'returns response body' do
-        expect { transaction.call }.to raise_error Atol::StateBadRequestError
-      end
-    end
-
-    context 'when response is 401 with error 12' do
-      before do
-        stub_request(:get, url)
-          .with(headers: { 'Token' => token_string })
-          .to_return(
-            status: 401,
-            headers: {},
-            body: {
-              uuid: uuid,
-              error: {
-                code: 12
-              }
-            }.to_json
-          )
-
-        allow(Atol.config).to receive(:http_client).and_return(Net::HTTP)
-      end
-
-      it 'returns response body' do
-        expect { transaction.call }.to raise_error Atol::StateMissingTokenError
       end
     end
   end
