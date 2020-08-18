@@ -24,7 +24,7 @@ module Atol
           attr_accessor :config, :name, :price, :quantity, :payment_method, :payment_object
 
           def initialize(config: nil, name:, price:, quantity: 1, payment_method:, payment_object:)
-            raise Atol::ZeroItemQuantityError if quantity.to_i.zero?
+            raise Atol::ZeroItemQuantityError if quantity.to_f.zero?
             raise BadPaymentMethodError unless PAYMENT_METHODS.include?(payment_method.to_s)
             raise BadPaymentObjectError unless PAYMENT_OBJECTS.include?(payment_object.to_s)
 
