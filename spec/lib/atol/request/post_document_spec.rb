@@ -2,9 +2,7 @@
 
 require './lib/atol/request/post_document'
 
-describe Atol::Request::PostDocument do
-  it { expect(described_class).to be_a Class }
-
+RSpec.describe Atol::Request::PostDocument do
   let(:config) do
     Atol::Config.new(overrides: {
       group_code: 'group_code_example',

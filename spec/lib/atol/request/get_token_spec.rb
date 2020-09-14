@@ -2,9 +2,7 @@
 
 require './lib/atol/request/get_token'
 
-describe Atol::Request::GetToken do
-  it { expect(Atol::Request::GetToken).to be_a Class }
-
+RSpec.describe Atol::Request::GetToken do
   describe '#new' do
     context 'raise error when config missing' do
       before { allow(Atol.config).to receive(:login).and_return(nil) }

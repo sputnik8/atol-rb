@@ -3,12 +3,10 @@
 require 'webmock/rspec'
 require './lib/atol/transaction/get_document_state'
 
-describe Atol::Transaction::GetDocumentState do
+RSpec.describe Atol::Transaction::GetDocumentState do
   let(:uuid) { 'example_uuid' }
   let(:config) { Atol::Config::Factory.example }
   let(:token_string) { 'example_token' }
-
-  it { expect(described_class).to be_a Class }
 
   describe '#new' do
     context 'with arguments' do

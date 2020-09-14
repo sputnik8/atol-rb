@@ -3,9 +3,7 @@
 require 'webmock/rspec'
 require './lib/atol/transaction/get_token'
 
-describe Atol::Transaction::GetToken do
-  it { expect(described_class).to be_a Class }
-
+RSpec.describe Atol::Transaction::GetToken do
   describe '#new' do
     context 'without arguments' do
       it { expect { described_class.new }.not_to raise_error }

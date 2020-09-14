@@ -2,11 +2,9 @@
 
 require './lib/atol/transaction/post_document'
 
-describe Atol::Transaction::PostDocument do
+RSpec.describe Atol::Transaction::PostDocument do
   let(:config) { Atol::Config::Factory.example }
   let(:token_string) { 'example_token_string' }
-
-  it { expect(described_class).to be_a Class }
 
   describe '#new' do
     context 'with arguments' do

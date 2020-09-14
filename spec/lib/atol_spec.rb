@@ -2,9 +2,7 @@
 
 require './lib/atol'
 
-describe Atol do
-  it { expect(Atol).to be_a Module }
-
+RSpec.describe Atol do
   describe 'ENCODING' do
     it { expect(Atol::ENCODING).to eql 'utf-8' }
   end

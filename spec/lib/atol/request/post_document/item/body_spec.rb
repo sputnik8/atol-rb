@@ -2,9 +2,7 @@
 
 require './lib/atol/request/post_document/item/body'
 
-describe Atol::Request::PostDocument::Item::Body do
-  it { expect(described_class).to be_a Class }
-
+RSpec.describe Atol::Request::PostDocument::Item::Body do
   let(:params) do
     Hash[
       name: 'item name',
