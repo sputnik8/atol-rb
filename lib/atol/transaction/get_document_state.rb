@@ -9,6 +9,7 @@ module Atol
       def initialize(uuid:, token:, config: nil)
         @config = config || Atol.config
         raise(Atol::ConfigExpectedError) unless @config.is_a?(Atol::Config)
+
         @params = { uuid: uuid, token: token, config: @config }
       end
 

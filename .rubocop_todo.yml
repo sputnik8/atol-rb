@@ -37,7 +37,7 @@ Layout/ExtraSpacing:
 # Cop supports --auto-correct.
 # Configuration parameters: IndentationWidth.
 # SupportedStyles: special_inside_parentheses, consistent, align_braces
-Layout/IndentHash:
+Layout/FirstHashElementIndentation:
   EnforcedStyle: consistent
 
 # Offense count: 1
@@ -66,7 +66,7 @@ Layout/SpaceInsideHashLiteralBraces:
 # Cop supports --auto-correct.
 # Configuration parameters: EnforcedStyle.
 # SupportedStyles: final_newline, final_blank_line
-Layout/TrailingBlankLines:
+Layout/TrailingEmptyLines:
   Exclude:
     - 'lib/atol.rb'
     - 'lib/atol/request.rb'
@@ -139,15 +139,6 @@ Style/BlockComments:
 Style/BlockDelimiters:
   Exclude:
     - 'spec/atol/request/post_document/sell/body_spec.rb'
-
-# Offense count: 13
-# Cop supports --auto-correct.
-# Configuration parameters: EnforcedStyle.
-# SupportedStyles: braces, no_braces, context_dependent
-Style/BracesAroundHashParameters:
-  Exclude:
-    - 'spec/atol/transaction/get_token_spec.rb'
-    - 'spec/atol/transaction/post_document_spec.rb'
 
 # Offense count: 1
 # Cop supports --auto-correct.

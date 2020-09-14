@@ -40,7 +40,7 @@ module Atol
             body.clone
           end
 
-          def to_json
+          def to_json(*_args)
             body.to_json
           end
 

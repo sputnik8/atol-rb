@@ -9,6 +9,7 @@ module Atol
       def initialize(operation:, token:, body:, config: nil, req_logger: nil, res_logger: nil)
         @config = config || Atol.config
         raise(Atol::ConfigExpectedError) unless @config.is_a?(Atol::Config)
+
         @params = {
           operation: operation,
           token: token,

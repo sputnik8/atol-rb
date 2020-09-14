@@ -74,8 +74,8 @@ describe Atol::Request::PostDocument do
       req_logger_flag = 'not called'
       res_logger_flag = 'not called'
 
-      req_logger = lambda { |req| req_logger_flag = req }
-      res_logger = lambda { |res| res_logger_flag = res }
+      req_logger = ->(req) { req_logger_flag = req }
+      res_logger = ->(res) { res_logger_flag = res }
 
       params = base_params.merge(
         operation: :sell,
@@ -84,7 +84,7 @@ describe Atol::Request::PostDocument do
       )
 
       request = described_class.new(params)
-      response = request.call
+      request.call
 
       expect(req_logger_flag).not_to eql 'not_called'
       expect(res_logger_flag).not_to eql 'not_called'

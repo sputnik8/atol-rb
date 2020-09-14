@@ -22,24 +22,23 @@ module Atol
             body.clone
           end
 
-          def to_json
+          def to_json(*_args)
             body.to_json
           end
 
           private
 
           def body
-            @body ||= body_template.tap do |result|
+            body_template.tap do |result|
+              receipt = result[:receipt]
+              client = receipt[:client]
               result[:external_id] = @external_id
-              result[:receipt][:client][:email] = @email unless @email.empty?
-              result[:receipt][:client][:phone] = @phone unless @phone.empty?
+              client[:email] = @email unless @email.empty?
+              client[:phone] = @phone unless @phone.empty?
               result[:service][:callback_url] = @config.callback_url if @config.callback_url
 
-              total = @items.inject(0) { |sum, item| sum += item[:sum] }
-
-              result[:receipt][:total] = total
-              result[:receipt][:payments][0][:sum] = total
-              result[:receipt][:items] = @items
+              receipt[:total] = receipt[:payments][0][:sum] = total
+              receipt[:items] = @items
             end
           end
 
@@ -64,6 +63,10 @@ module Atol
               service: {},
               timestamp: Time.now.strftime(Atol::TIMESTAMP_FORMAT)
             }
+          end
+
+          def total
+            @total ||= @items.inject(0) { |sum, item| sum += item[:sum] }
           end
         end
       end

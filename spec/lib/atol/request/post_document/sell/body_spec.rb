@@ -19,13 +19,15 @@ describe Atol::Request::PostDocument::Sell::Body do
 
   describe '#to_h' do
     let(:timestamp) { Time.now }
-    let(:params) { Hash[
+    let(:params) do
+      Hash[
       external_id: '123',
       phone: '123456',
       email: 'email@example.com',
       items: [{ sum: 10 }, { sum: 5 }],
       config: Atol::Config::Factory.example
-    ]}
+    ]
+    end
 
     before { allow(Time).to receive(:now).and_return(timestamp) }
 

@@ -17,7 +17,7 @@ describe Atol::Request::GetDocumentState do
 
   describe '#call return result of http request' do
     before do
-      stub_request(:get, "https://online.atol.ru/possystem/v4/123456/report/123")
+      stub_request(:get, 'https://online.atol.ru/possystem/v4/123456/report/123')
         .with(headers: { 'Token' => '456' })
         .to_return(status: 200, body: 'result', headers: {})
 

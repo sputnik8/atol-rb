@@ -17,7 +17,7 @@ describe Atol::Transaction::PostDocument do
     context 'with bad config' do
       let(:params) { Hash[operation: :sell, token: token_string, body: '', config: 1] }
       let(:error) { Atol::ConfigExpectedError }
-      it { expect { described_class.new(params) }.to raise_error(error)  }
+      it { expect { described_class.new(params) }.to raise_error(error) }
     end
   end
 
