@@ -11,6 +11,7 @@ module Atol
         @config = config || Atol.config
         raise(Atol::ConfigExpectedError) unless @config.is_a?(Atol::Config)
         raise(Atol::MissingConfigError, 'group_code missing') if @config.group_code.nil?
+
         @token = token
         @uuid = uuid
       end

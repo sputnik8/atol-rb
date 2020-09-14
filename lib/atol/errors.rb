@@ -20,7 +20,7 @@ module Atol
   class ZeroItemQuantityError < StandardError; end
 
   ERRORS = Hash[
-      0 =>  BadJSONError,
+      0 => BadJSONError,
       10 => IncomingMissingTokenError,
       11 => IncomingExpiredTokenError,
       20 => GroupCodeToTokenError,
