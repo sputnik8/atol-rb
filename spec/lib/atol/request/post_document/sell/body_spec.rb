@@ -2,9 +2,7 @@
 
 require './lib/atol/request/post_document/sell/body'
 
-describe Atol::Request::PostDocument::Sell::Body do
-  it { expect(described_class).to be_a Class }
-
+RSpec.describe Atol::Request::PostDocument::Sell::Body do
   describe '#new' do
     it 'raise error when contacts empty' do
       params = Hash[external_id: '123456', items: [1, 2, 3]]

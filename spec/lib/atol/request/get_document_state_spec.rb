@@ -3,9 +3,7 @@
 require 'net/http'
 require './lib/atol/request/get_document_state'
 
-describe Atol::Request::GetDocumentState do
-  it { expect(Atol::Request::GetDocumentState).to be_a Class }
-
+RSpec.describe Atol::Request::GetDocumentState do
   describe '#new' do
     before { allow(Atol.config).to receive(:group_code).and_return(nil) }
     let(:request) { described_class.new(uuid: '123', token: '456') }

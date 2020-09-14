@@ -2,9 +2,7 @@
 
 require './lib/atol/config'
 
-describe Atol::Config do
-  it { expect(Atol::Config).to be_a Class }
-
+RSpec.describe Atol::Config do
   describe 'contains main attributes' do
     let(:config) do
       Atol::Config.new(overrides: {
