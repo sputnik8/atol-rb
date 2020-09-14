@@ -56,6 +56,16 @@ describe Atol::Request::PostDocument::Item::Body do
     end
   end
 
+  context 'when quantity less then 1 and more then 0' do
+    before do
+      params[:quantity] = 0.4
+    end
+
+    it 'injects quantity' do
+      expect(body_hash[:quantity]).to eql 0.4
+    end
+  end
+
   context 'when bad payment_method given' do
     before { params[:payment_method] = 'bad payment method' }
 
