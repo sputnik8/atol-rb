@@ -61,7 +61,7 @@ describe Atol::Request::PostDocument::Item::Body do
       params[:quantity] = 0.4
     end
 
-    it 'inject qunatity' do
+    it 'injects quantity' do
       expect(body_hash[:quantity]).to eql 0.4
     end
   end
