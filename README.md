@@ -326,3 +326,28 @@ end
 response = Atol::Transaction::GetDocumentState.new(token: token, uuid: uuid).call
 
 ```
+
+### Специальные случаи при регистрации документа
+
+#### Передача признака агента и атрибутов поставщика
+
+АТОЛ позволяет передавать в чеке информацию о типе агента, который осуществляет регистрацию чека и поставщике товара/услуги.
+
+Для этого в API АТОЛ предусмотрены два составных поля - `agent_info` и `supplier_info`.
+
+Эти поля можно передать в класс `Atol::Request::PostDocument::Item::Body` в виде отдельных опциональных аргументов `agent_type`, `supplier_phones`, `supplier_name`, `supplier_inn`.
+
+Пример:
+
+```ruby
+item = Atol::Request::PostDocument::Item::Body.new(
+  name: 'product name',
+  price: 100,
+  payment_method: 'full_payment',
+  payment_object: 'service',
+  agent_type: 'paying_agent',
+  supplier_phones: ['9251234567', '+7925 1234567'],
+  supplier_name: 'Название поставщика услуги',
+  supplier_inn: '1234567890'
+).to_h
+```
