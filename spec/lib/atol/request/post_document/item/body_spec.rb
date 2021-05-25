@@ -44,6 +44,14 @@ RSpec.describe Atol::Request::PostDocument::Item::Body do
     expect(body_hash[:tax]).to eql :example_default_tax
   end
 
+  it 'does not inject agent_type' do
+    expect(body_hash.keys.include?(:agent_info)).to eq false
+  end
+
+  it 'does not inject supplier_info' do
+    expect(body_hash.keys.include?(:supplier_info)).to eq false
+  end
+
   context 'when quantity is 0' do
     before do
       params[:quantity] = 0
@@ -64,7 +72,7 @@ RSpec.describe Atol::Request::PostDocument::Item::Body do
     end
   end
 
-  context 'when there is agent_info and supplier_info in params' do
+  context 'when there is agent_type and supplier_info in params' do
     let(:agent_type) { 'paying_agent' }
     let(:supplier_phones) { ['9251234567', '+7925 1234567'] }
     let(:supplier_name) { 'supplier name' }
@@ -84,6 +92,16 @@ RSpec.describe Atol::Request::PostDocument::Item::Body do
       expect(body_hash[:supplier_info][:phones]).to eql supplier_phones
       expect(body_hash[:supplier_info][:name]).to eql supplier_name
       expect(body_hash[:supplier_info][:inn]).to eql supplier_inn
+    end
+  end
+
+  context 'when bad agent_type given' do
+    before { params[:agent_type] = 'bad agent type' }
+
+    it 'raise error' do
+      expect { body_hash }.to raise_error(
+        Atol::Request::PostDocument::Item::Body::BadAgentTypeError
+      )
     end
   end
 

@@ -9,6 +9,7 @@ module Atol
         class Body
           BadPaymentMethodError = Class.new(StandardError)
           BadPaymentObjectError = Class.new(StandardError)
+          BadAgentTypeError = Class.new(StandardError)
 
           PAYMENT_METHODS = [
             'full_prepayment', 'prepayment', 'advance', 'full_payment',
@@ -19,6 +20,11 @@ module Atol
             'commodity', 'excise', 'job', 'service', 'gambling_bet', 'gambling_prize',
             'lottery', 'lottery_prize', 'intellectual_activity', 'payment', 'agent_commission',
             'composite', 'another'
+          ]
+
+          AGENT_TYPES = [
+            'bank_paying_agent', 'bank_paying_subagent', 'paying_agent',
+            'paying_subagent', 'attorney', 'commission_agent', 'another'
           ]
 
           attr_accessor :config, :name, :price, :quantity, :payment_method,
@@ -33,6 +39,7 @@ module Atol
             raise Atol::ZeroItemQuantityError if quantity.to_f.zero?
             raise BadPaymentMethodError unless PAYMENT_METHODS.include?(payment_method.to_s)
             raise BadPaymentObjectError unless PAYMENT_OBJECTS.include?(payment_object.to_s)
+            raise BadAgentTypeError unless agent_type.nil? || AGENT_TYPES.include?(agent_type.to_s)
 
             self.config = config || Atol.config
             self.name = name
@@ -40,7 +47,7 @@ module Atol
             self.quantity = quantity.to_f
             self.payment_method = payment_method.to_s
             self.payment_object = payment_object.to_s
-            self.agent_type = agent_type.to_s
+            self.agent_type = agent_type
             self.supplier_phones = supplier_phones.to_a
             self.supplier_name = supplier_name.to_s
             self.supplier_inn = supplier_inn.to_s
