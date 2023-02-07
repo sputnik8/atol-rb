@@ -20,7 +20,7 @@ RSpec.describe Atol::Transaction::PostDocument do
   end
 
   describe '#call' do
-    let(:url) { 'https://online.atol.ru/possystem/v4/example_group_code/sell' }
+    let(:url) { 'https://online.atol.ru/possystem/v5/example_group_code/sell' }
     let(:params) do
       Hash[operation: :sell, token: token_string, body: '', config: config]
     end
