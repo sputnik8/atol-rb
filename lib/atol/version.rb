@@ -2,7 +2,7 @@
 
 module Atol
   module Version
-    API = 'v4'
+    API = 'v5'
     LIB = '0.7.1'
   end
 end

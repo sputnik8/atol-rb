@@ -36,7 +36,7 @@ RSpec.describe Atol::Config do
 
     it('#req_tries_number') { expect(config.req_tries_number).to eql 3 }
     it('#default_payment_type') { expect(config.default_payment_type).to eql 1 }
-    it('#api_url') { expect(config.api_url).to eql 'https://online.atol.ru/possystem/v4' }
+    it('#api_url') { expect(config.api_url).to eql 'https://online.atol.ru/possystem/v5' }
     it('#http_client') { expect(config.http_client.name).to eql 'Net::HTTP' }
 
     it('#callback_url') do
