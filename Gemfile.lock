@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    atol (0.8.0)
+    atol (0.7.1)
       anyway_config (~> 1.0)
 
 GEM
