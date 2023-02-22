@@ -23,7 +23,7 @@ RSpec.describe Atol::Transaction::GetDocumentState do
 
   describe '#call' do
     let(:url) do
-      'https://online.atol.ru/possystem/v5/example_group_code/report/example_uuid'
+      'https://online.atol.ru/possystem/v4/example_group_code/report/example_uuid'
     end
 
     let(:params) do
