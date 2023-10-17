@@ -7,7 +7,7 @@ module Atol
     class PostDocument
       module Sell
         class Body
-          def initialize(external_id:, phone: '', email: '', items:, config: nil)
+          def initialize(external_id:, phone: '', email: '', items:, config: nil, **options)
             raise(Atol::EmptyClientContactError) if phone.empty? && email.empty?
             raise(Atol::EmptySellItemsError) if items.empty?
 
@@ -16,6 +16,7 @@ module Atol
             @phone = phone
             @email = email
             @items = items
+            @agent_info_type = options[:agent_info_type]
           end
 
           def to_h
@@ -32,13 +33,12 @@ module Atol
             body_template.tap do |result|
               receipt = result[:receipt]
               client = receipt[:client]
+
               result[:external_id] = @external_id
-              client[:email] = @email unless @email.empty?
-              client[:phone] = @phone unless @phone.empty?
               result[:service][:callback_url] = @config.callback_url if @config.callback_url
 
-              receipt[:total] = receipt[:payments][0][:sum] = total
-              receipt[:items] = @items
+              add_client_data(client)
+              add_receipt_data(receipt)
             end
           end
 
@@ -63,6 +63,23 @@ module Atol
               service: {},
               timestamp: Time.now.strftime(Atol::TIMESTAMP_FORMAT)
             }
+          end
+
+          def add_client_data(client)
+            client[:email] = @email unless @email.empty?
+            client[:phone] = @phone unless @phone.empty?
+          end
+
+          def add_receipt_data(receipt)
+            receipt[:total] = receipt[:payments][0][:sum] = total
+            receipt[:items] = @items
+            add_agent_and_supplier_info(receipt)
+          end
+
+          def add_agent_and_supplier_info(receipt)
+            return if @agent_info_type.nil? || @agent_info_type.empty?
+
+            receipt[:agent_info] = { type: @agent_info_type }
           end
 
           def total

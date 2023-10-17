@@ -10,7 +10,9 @@ RSpec.describe Atol::Request::PostDocument::Item::Body do
       quantity: 2,
       config: Atol::Config::Factory.example,
       payment_method: 'full_payment',
-      payment_object: 'service'
+      payment_object: 'service',
+      supplier_info_inn: '10101964',
+      supplier_info_name: "ООО 'Моя Оборона'"
     ]
   end
 
@@ -42,6 +44,14 @@ RSpec.describe Atol::Request::PostDocument::Item::Body do
 
   it 'inject config default tax' do
     expect(body_hash[:tax]).to eql :example_default_tax
+  end
+
+  it 'inject supplier inn' do
+    expect(body_hash[:supplier_info][:inn]).to eql '10101964'
+  end
+
+  it 'inject supplier name' do
+    expect(body_hash[:supplier_info][:name]).to eql "ООО 'Моя Оборона'"
   end
 
   context 'when quantity is 0' do
