@@ -58,7 +58,8 @@ module Atol
 
           def supplier_info
             info = { inn: supplier_info_inn, name: supplier_info_name }
-            { supplier_info: info } unless info.values.all?(&:empty?)
+            info = info.reject { |_key, value| value.empty? }
+            { supplier_info: info } unless info.empty?
           end
 
           def body
