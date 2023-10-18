@@ -151,14 +151,19 @@ body = Atol::Request::PostDocument::Sell::Body.new(
   email: 'example@example.com',
   items: [
     ...
-  ]
+  ],
+  agent_info_type: 'bank_paying_agent'
 ).to_json
 ```
+
+`agent_info_type` опциональный аргумент - признак агента (тег ФФД - 1057)
+
 Массив `items` должен включать в себя объекты, которые так же соответствуют схеме.
 
 Для создания `items` можно использовать класс `Atol::Request::PostDocument::Item::Body`.
 
-Его конструктор принимает обязательные аргументы `name`, `price`, `payment_method`, `payment_object` и опциональный `quantity` (по умолчанию 1).
+Его конструктор принимает обязательные аргументы `name`, `price`, `payment_method`, `payment_object` и опциональные `quantity` (по умолчанию 1), `supplier_info_inn`, `supplier_info_name`.
+`supplier_info_inn` обязателен, если передан `agent_info_type`.
 
 Допустимые значения `payment_method`:
 ```ruby
