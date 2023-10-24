@@ -11,6 +11,7 @@ RSpec.describe Atol::Request::PostDocument::Item::Body do
       config: Atol::Config::Factory.example,
       payment_method: 'full_payment',
       payment_object: 'service',
+      agent_info_type: 'agent',
       supplier_info_inn: '10101964',
       supplier_info_name: "ООО 'Моя Оборона'"
     ]
@@ -44,6 +45,10 @@ RSpec.describe Atol::Request::PostDocument::Item::Body do
 
   it 'inject config default tax' do
     expect(body_hash[:tax]).to eql :example_default_tax
+  end
+
+  it 'inject agent type' do
+    expect(body_hash[:agent_info][:type]).to eql 'agent'
   end
 
   it 'inject supplier inn' do

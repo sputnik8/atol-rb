@@ -162,7 +162,8 @@ body = Atol::Request::PostDocument::Sell::Body.new(
 
 Для создания `items` можно использовать класс `Atol::Request::PostDocument::Item::Body`.
 
-Его конструктор принимает обязательные аргументы `name`, `price`, `payment_method`, `payment_object` и опциональные `quantity` (по умолчанию 1), `supplier_info_inn`, `supplier_info_name`.
+Его конструктор принимает обязательные аргументы `name`, `price`, `payment_method`, `payment_object` и опциональные `quantity` (по умолчанию 1), `supplier_info_inn`, `supplier_info_name`, `agent_info_type` (тег ФФД - 1222).
+
 `supplier_info_inn` обязателен, если передан `agent_info_type`.
 
 Допустимые значения `payment_method`:
