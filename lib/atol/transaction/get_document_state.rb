@@ -14,7 +14,7 @@ module Atol
       end
 
       def call
-        request = Atol::Request::GetDocumentState.new(@params)
+        request = Atol::Request::GetDocumentState.new(**@params)
         response = request.call
         encoded_body = response.body.dup.force_encoding(Atol::ENCODING)
         json = JSON.parse(encoded_body)
