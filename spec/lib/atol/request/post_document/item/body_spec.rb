@@ -17,7 +17,7 @@ RSpec.describe Atol::Request::PostDocument::Item::Body do
     ]
   end
 
-  let(:body_hash) { described_class.new(params).to_h }
+  let(:body_hash) { described_class.new(**params).to_h }
 
   it 'inject name' do
     expect(body_hash[:name]).to eql 'item name'

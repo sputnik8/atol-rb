@@ -6,12 +6,12 @@ RSpec.describe Atol::Request::PostDocument::Sell::Body do
   describe '#new' do
     it 'raise error when contacts empty' do
       params = Hash[external_id: '123456', items: [1, 2, 3]]
-      expect { described_class.new(params) }.to raise_error(Atol::EmptyClientContactError)
+      expect { described_class.new(**params) }.to raise_error(Atol::EmptyClientContactError)
     end
 
     it 'raise error when items empty' do
       params = Hash[external_id: '123456', phone: '123456789', items: []]
-      expect { described_class.new(params) }.to raise_error(Atol::EmptySellItemsError)
+      expect { described_class.new(**params) }.to raise_error(Atol::EmptySellItemsError)
     end
   end
 
@@ -30,7 +30,7 @@ RSpec.describe Atol::Request::PostDocument::Sell::Body do
 
     before { allow(Time).to receive(:now).and_return(timestamp) }
 
-    let(:body_hash) { described_class.new(params).to_h }
+    let(:body_hash) { described_class.new(**params).to_h }
 
     describe 'injects config variables' do
       it 'sno' do

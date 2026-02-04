@@ -3,6 +3,5 @@
 require './lib/atol/version'
 
 RSpec.describe Atol::Version do
-  it { expect(Atol::Version::API).to eq('v4') }
-  it { expect(Atol::Version::LIB).to eq('1.0.0') }
+  it { expect(Atol::Version::LIB).to eq('1.1.0') }
 end
