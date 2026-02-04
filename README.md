@@ -95,6 +95,7 @@ Rails.application.config.after_initialize do
     config.callback_url         = 'https://www.example.com/callback_path'
     config.company_email        = 'example@email.com'
     config.default_payment_type = '1'
+    config.api_url = 'https://online.atol.ru/possystem/v5' # по умолчанию 'https://online.atol.ru/possystem/v4' ФФД 1.05
   end
 end
 ```
