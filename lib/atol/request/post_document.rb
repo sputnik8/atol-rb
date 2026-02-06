@@ -3,6 +3,8 @@
 require 'atol'
 require 'atol/errors'
 require 'atol/request/post_document/item/body'
+require 'atol/request/post_document/item/v4/body'
+require 'atol/request/post_document/item/v5/body'
 require 'atol/request/post_document/sell/body'
 
 module Atol

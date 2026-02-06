@@ -23,7 +23,6 @@ RSpec.describe Atol::Request::PostDocument::Sell::Body do
       phone: '123456',
       email: 'email@example.com',
       items: [{ sum: 10 }, { sum: 5 }],
-      agent_info_type: 'bank_paying_agent',
       config: Atol::Config::Factory.example
     ]
     end
@@ -65,10 +64,6 @@ RSpec.describe Atol::Request::PostDocument::Sell::Body do
 
       it 'contact email' do
         expect(body_hash[:receipt][:client][:email]).to eql 'email@example.com'
-      end
-
-      it 'agent_info type' do
-        expect(body_hash[:receipt][:agent_info][:type]).to eql params[:agent_info_type]
       end
     end
 

@@ -18,6 +18,6 @@ module Atol
                 req_tries_number: 3,
                 default_payment_type: 1,
                 http_client: Net::HTTP,
-                api_url: 'https://online.atol.ru/possystem/v4'
+                api_url: Atol::Version::V4
   end
 end
