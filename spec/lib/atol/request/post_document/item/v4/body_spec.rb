@@ -4,7 +4,7 @@ require './lib/atol/request/post_document/item/v4/body'
 
 RSpec.describe Atol::Request::PostDocument::Item::V4::Body do
   let(:params) do
-    Hash[
+    {
       name: 'item name',
       price: 100,
       quantity: 2,
@@ -14,7 +14,7 @@ RSpec.describe Atol::Request::PostDocument::Item::V4::Body do
       agent_info_type: 'agent',
       supplier_info_inn: '10101964',
       supplier_info_name: "ООО 'Моя Оборона'"
-    ]
+    }
   end
 
   let(:body_hash) { described_class.new(**params).to_h }
