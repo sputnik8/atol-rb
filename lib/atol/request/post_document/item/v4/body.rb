@@ -22,8 +22,15 @@ module Atol
               composite another
             ].freeze
 
-            attr_accessor :config, :name, :price, :quantity, :payment_method, :payment_object,
-                          :agent_info_type, :supplier_info_inn, :supplier_info_name
+            attr_accessor :config,
+                          :name,
+                          :price,
+                          :quantity,
+                          :payment_method,
+                          :payment_object,
+                          :agent_info_type,
+                          :supplier_info_inn,
+                          :supplier_info_name
 
             def initialize(config: nil, name:, price:, quantity: 1, payment_method:, payment_object:, **options)
               setup_attributes(config, name, price, quantity, payment_method, payment_object, options)

@@ -20,8 +20,7 @@ module Atol
             MEASURE = [0, 10, 11, 12, 20, 21, 22, 30, 31, 32, 40, 41, 42, 50, 51, 70, 71, 72, 73, 80, 81, 82, 83, 255].freeze
             VAT_TYPES = %w[none vat0 vat10 vat110 vat20 vat120].freeze
 
-            attr_accessor :config,
-                          :name,
+            attr_accessor :name,
                           :price,
                           :quantity,
                           :payment_method,
@@ -32,8 +31,8 @@ module Atol
                           :measure,
                           :vat
 
-            def initialize(config: nil, name:, price:, quantity: 1, payment_method:, payment_object:, **options)
-              setup_attributes(config, name, price, quantity, payment_method, payment_object, options)
+            def initialize(name:, price:, quantity: 1, payment_method:, payment_object:, **options)
+              setup_attributes(name, price, quantity, payment_method, payment_object, options)
               validate_attributes
             end
 
@@ -47,8 +46,7 @@ module Atol
 
             private
 
-            def setup_attributes(config, name, price, quantity, payment_method, payment_object, options)
-              self.config = config || Atol.config
+            def setup_attributes(name, price, quantity, payment_method, payment_object, options)
               self.name = name
               self.price = price.to_f
               self.quantity = quantity.to_f
