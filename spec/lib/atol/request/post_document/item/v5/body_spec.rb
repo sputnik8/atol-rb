@@ -126,4 +126,10 @@ RSpec.describe Atol::Request::PostDocument::Item::V5::Body do
       )
     end
   end
+
+  context "when agent_info_type nil" do
+    before { params[:agent_info_type] = nil }
+
+    it { expect(body_hash[:supplier_info]).to be_nil }
+  end
 end

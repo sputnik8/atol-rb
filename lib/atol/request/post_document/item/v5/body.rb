@@ -31,8 +31,8 @@ module Atol
                           :measure,
                           :vat
 
-            def initialize(name:, price:, quantity: 1, payment_method:, payment_object:, **options)
-              setup_attributes(name, price, quantity, payment_method, payment_object, options)
+            def initialize(name:, price:, quantity: 1, payment_method:, payment_object:, measure:, vat:, **options)
+              setup_attributes(name, price, quantity, payment_method, payment_object, measure, vat, options)
               validate_attributes
             end
 
@@ -46,7 +46,7 @@ module Atol
 
             private
 
-            def setup_attributes(name, price, quantity, payment_method, payment_object, options)
+            def setup_attributes(name, price, quantity, payment_method, payment_object, measure, vat, options)
               self.name = name
               self.price = price.to_f
               self.quantity = quantity.to_f
@@ -55,8 +55,8 @@ module Atol
               self.agent_info_type = options[:agent_info_type].to_s
               self.supplier_info_inn = options[:supplier_info_inn].to_s
               self.supplier_info_name = options[:supplier_info_name].to_s
-              self.measure = options[:measure]
-              self.vat = options[:vat]
+              self.measure = measure
+              self.vat = vat
             end
 
             def validate_attributes
