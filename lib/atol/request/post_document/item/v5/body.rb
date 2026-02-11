@@ -18,7 +18,7 @@ module Atol
             PAYMENT_METHODS = %w[full_prepayment prepayment advance full_payment partial_payment credit credit_payment].freeze
             PAYMENT_OBJECTS = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23].freeze
             MEASURE = [0, 10, 11, 12, 20, 21, 22, 30, 31, 32, 40, 41, 42, 50, 51, 70, 71, 72, 73, 80, 81, 82, 83, 255].freeze
-            VAT_TYPES = %w[none vat0 vat10 vat110 vat20 vat120].freeze
+            VAT_TYPES = %w[none vat0 vat5 vat7 vat10 vat22 vat105 vat107 vat110 vat20 vat120 vat122].freeze
 
             attr_accessor :name,
                           :price,
