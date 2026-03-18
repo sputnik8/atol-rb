@@ -72,6 +72,7 @@ module Atol
           def add_receipt_data(receipt)
             receipt[:total] = receipt[:payments][0][:sum] = total
             receipt[:items] = @items
+            receipt[:internet] = @config.internet
           end
 
           def total

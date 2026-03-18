@@ -25,57 +25,9 @@ gem 'atol'
 ```
 $ bundle install
 ```
-### Конфигурация
-
-Для обращения к сервису необходимы данные учетной записи.
-
-При инициализации приложение попытается найти необходимые параметры в константе `ENV`.
-
-Для корректной работы потребуются следующие переменные окружения.
-
-**Все переменные являются обязательными**.
-
-```bash
-# .env
-ATOL_INN=123456789010
-ATOL_LOGIN=example-login
-ATOL_PASSWORD=example-password
-ATOL_PAYMENT_ADDRESS="г. Москва, ул. Ленина, д.1 к.2"
-ATOL_GROUP_CODE=example-group-code
-ATOL_DEFAULT_SNO=esn
-ATOL_DEFAULT_TAX=vat18
-ATOL_CALLBACK_URL=https://www.example.com/callback_path
-ATOL_COMPANY_EMAIL=example@email.com
-ATOL_DEFAULT_PAYMENT_TYPE=1
-```
-
-Значения `ATOL_INN`, `ATOL_LOGIN`, `ATOL_PASSWORD`, `ATOL_PAYMENT_ADDRESS` и `ATOL_GROUP_CODE` вы получаете при регистрации в сервисе.
-
-`ATOL_DEFAULT_SNO` - система налогообложения. Возможные значения:
-1) "osn" – общая СН;
-2) "usn_income" – упрощенная СН (доходы);
-3) "usn_income_outcome" – упрощенная СН (доходы минус расходы);
-4) "envd" – единый налог на вмененный доход;
-5) "esn" – единый сельскохозяйственный налог;
-6) "patent" – патентная СН.
-
-`ATOL_DEFAULT_TAX` - номер налога в ККТ. Возможные значения:
-1) "none" – без НДС;
-2) "vat0" – НДС по ставке 0%;
-3) "vat10" – НДС чека по ставке 10%;
-4) "vat18" – НДС чека по ставке 18%;
-5) "vat110" – НДС чека по расчетной ставке 10/110;
-6) "vat118" – НДС чека по расчетной ставке 18/118.
-
-`ATOL_CALLBACK_URL` - адрес, по которому сервис будет отправлять информацию после создания чека.
-
-`ATOL_DEFAULT_PAYMENT_TYPE` - вид оплаты. Возможные значения:
-1) "1" – электронный;
-2) "2" – "9" – расширенные типы оплаты. Для каждого фискального типа оплаты можно указать расширенный тип оплаты.
-
-`ATOL_COMPANY_EMAIL` - адрес электронной почты вашей компании.
-
 ### Конфигурация в инициализаторе
+
+Для обращения к сервису необходимы данные учетной записи. `login`, `password` и `group_code`
 
 Для Rails-приложений так же можно создать файл инициализации и задать параметры непосредственно в коде:
 
@@ -87,14 +39,15 @@ Rails.application.config.after_initialize do
     config.inn                  = '123456789010'
     config.login                = 'example-login'
     config.password             = 'example-password'
-    config.payment_address      = 'г. Москва, ул. Ленина, д.1 к.2'
+    config.payment_address      = 'г. Москва, ул. Ленина, д.1 к.2' # тэг 1187
     config.group_code           = 'example-group-code'
-    config.default_sno          = 'esn'
+    config.default_sno          = 'esn' # тэг 1055
     config.default_tax          = 'vat18'
     config.callback_url         = 'https://www.example.com/callback_path'
     config.company_email        = 'example@email.com'
-    config.default_payment_type = '1'
-    config.api_url = 'https://online.atol.ru/possystem/v5' # по умолчанию 'https://online.atol.ru/possystem/v4' ФФД 1.05
+    config.default_payment_type = '1' # тэг 1031
+    config.api_url              = 'https://online.atol.ru/possystem/v5' # по умолчанию 'https://online.atol.ru/possystem/v4' ФФД 1.05
+    config.internet             = true # тэг 1125, по умолчанию false
   end
 end
 ```

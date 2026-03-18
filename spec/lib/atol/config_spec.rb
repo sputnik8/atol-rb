@@ -15,7 +15,8 @@ RSpec.describe Atol::Config do
         default_tax: :example_default_tax,
         http_client: :example_http_client,
         company_email: :example_company_email,
-        api_url: 'example_api_url'
+        api_url: 'example_api_url',
+        internet: true
       })
     end
 
@@ -29,6 +30,7 @@ RSpec.describe Atol::Config do
     it('#http_client') { expect(config.http_client).to eql :example_http_client }
     it('#company_email') { expect(config.company_email).to eql :example_company_email }
     it('#api_url') { expect(config.api_url).to eql 'example_api_url' }
+    it('#internet') { expect(config.internet).to be true }
   end
 
   describe 'contains optional attributes' do
