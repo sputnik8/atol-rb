@@ -6,12 +6,12 @@ RSpec.describe Atol::Request::PostDocument::Sell::Body do
   describe '#new' do
     it 'raise error when contacts empty' do
       params = Hash[external_id: '123456', items: [1, 2, 3]]
-      expect { described_class.new(params) }.to raise_error(Atol::EmptyClientContactError)
+      expect { described_class.new(**params) }.to raise_error(Atol::EmptyClientContactError)
     end
 
     it 'raise error when items empty' do
       params = Hash[external_id: '123456', phone: '123456789', items: []]
-      expect { described_class.new(params) }.to raise_error(Atol::EmptySellItemsError)
+      expect { described_class.new(**params) }.to raise_error(Atol::EmptySellItemsError)
     end
   end
 
@@ -23,14 +23,13 @@ RSpec.describe Atol::Request::PostDocument::Sell::Body do
       phone: '123456',
       email: 'email@example.com',
       items: [{ sum: 10 }, { sum: 5 }],
-      agent_info_type: 'bank_paying_agent',
       config: Atol::Config::Factory.example
     ]
     end
 
     before { allow(Time).to receive(:now).and_return(timestamp) }
 
-    let(:body_hash) { described_class.new(params).to_h }
+    let(:body_hash) { described_class.new(**params).to_h }
 
     describe 'injects config variables' do
       it 'sno' do
@@ -52,6 +51,10 @@ RSpec.describe Atol::Request::PostDocument::Sell::Body do
       it 'payment address' do
         expect(body_hash[:receipt][:company][:payment_address]).to eql :example_payment_address
       end
+
+      it 'internet' do
+        expect(body_hash[:receipt][:internet]).to be false
+      end
     end
 
     describe 'injects document params' do
@@ -65,10 +68,6 @@ RSpec.describe Atol::Request::PostDocument::Sell::Body do
 
       it 'contact email' do
         expect(body_hash[:receipt][:client][:email]).to eql 'email@example.com'
-      end
-
-      it 'agent_info type' do
-        expect(body_hash[:receipt][:agent_info][:type]).to eql params[:agent_info_type]
       end
     end
 

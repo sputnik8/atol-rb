@@ -9,13 +9,13 @@ RSpec.describe Atol::Transaction::PostDocument do
   describe '#new' do
     context 'with arguments' do
       let(:params) { Hash[operation: :sell, token: token_string, body: '', config: config] }
-      it { expect { described_class.new(params) }.not_to raise_error }
+      it { expect { described_class.new(**params) }.not_to raise_error }
     end
 
     context 'with bad config' do
       let(:params) { Hash[operation: :sell, token: token_string, body: '', config: 1] }
       let(:error) { Atol::ConfigExpectedError }
-      it { expect { described_class.new(params) }.to raise_error(error) }
+      it { expect { described_class.new(**params) }.to raise_error(error) }
     end
   end
 
@@ -24,7 +24,7 @@ RSpec.describe Atol::Transaction::PostDocument do
     let(:params) do
       Hash[operation: :sell, token: token_string, body: '', config: config]
     end
-    let(:transaction) { described_class.new(params) }
+    let(:transaction) { described_class.new(**params) }
 
     context 'when response is 200' do
       before do

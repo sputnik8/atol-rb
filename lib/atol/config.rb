@@ -15,9 +15,10 @@ module Atol
                 :default_tax,
                 :callback_url,
                 :company_email,
+                internet: false,
                 req_tries_number: 3,
                 default_payment_type: 1,
                 http_client: Net::HTTP,
-                api_url: "https://online.atol.ru/possystem/#{Atol::Version::API}"
+                api_url: Atol::Version::V4
   end
 end

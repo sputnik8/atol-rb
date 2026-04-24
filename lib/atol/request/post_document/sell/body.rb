@@ -16,7 +16,6 @@ module Atol
             @phone = phone
             @email = email
             @items = items
-            @agent_info_type = options[:agent_info_type]
           end
 
           def to_h
@@ -73,13 +72,7 @@ module Atol
           def add_receipt_data(receipt)
             receipt[:total] = receipt[:payments][0][:sum] = total
             receipt[:items] = @items
-            add_agent_and_supplier_info(receipt)
-          end
-
-          def add_agent_and_supplier_info(receipt)
-            return if @agent_info_type.nil? || @agent_info_type.empty?
-
-            receipt[:agent_info] = { type: @agent_info_type }
+            receipt[:internet] = @config.internet
           end
 
           def total

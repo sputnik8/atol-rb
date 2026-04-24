@@ -18,39 +18,39 @@ RSpec.describe Atol::Request::PostDocument do
     context 'when given existing operation' do
       it 'sell' do
         params = base_params.merge(operation: 'sell')
-        expect { described_class.new(params) }.not_to raise_error
+        expect { described_class.new(**params) }.not_to raise_error
       end
 
       it 'sell_refund' do
         params = base_params.merge(operation: 'sell_refund')
-        expect { described_class.new(params) }.not_to raise_error
+        expect { described_class.new(**params) }.not_to raise_error
       end
 
       it 'sell_correction' do
         params = base_params.merge(operation: 'sell_correction')
-        expect { described_class.new(params) }.not_to raise_error
+        expect { described_class.new(**params) }.not_to raise_error
       end
 
       it 'buy' do
         params = base_params.merge(operation: 'buy')
-        expect { described_class.new(params) }.not_to raise_error
+        expect { described_class.new(**params) }.not_to raise_error
       end
 
       it 'buy_refund' do
         params = base_params.merge(operation: 'buy_refund')
-        expect { described_class.new(params) }.not_to raise_error
+        expect { described_class.new(**params) }.not_to raise_error
       end
 
       it 'buy_correction' do
         params = base_params.merge(operation: 'buy_correction')
-        expect { described_class.new(params) }.not_to raise_error
+        expect { described_class.new(**params) }.not_to raise_error
       end
     end
 
     context 'when given not existing operation' do
       let(:not_existing_operation) { :kill_all_humans }
       let(:params) { base_params.merge(operation: not_existing_operation) }
-      it { expect { described_class.new(params) }.to raise_error(Atol::UnknownOperationError) }
+      it { expect { described_class.new(**params) }.to raise_error(Atol::UnknownOperationError) }
     end
   end
 
@@ -63,7 +63,7 @@ RSpec.describe Atol::Request::PostDocument do
 
     it 'return result of http request' do
       params = base_params.merge(operation: :sell)
-      request = described_class.new(params)
+      request = described_class.new(**params)
       response = request.call
       expect(response.code).to eql '200'
     end
@@ -81,7 +81,7 @@ RSpec.describe Atol::Request::PostDocument do
         res_logger: res_logger
       )
 
-      request = described_class.new(params)
+      request = described_class.new(**params)
       request.call
 
       expect(req_logger_flag).not_to eql 'not_called'

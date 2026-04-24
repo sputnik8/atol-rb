@@ -2,7 +2,12 @@
 
 module Atol
   module Version
-    API = 'v4'
-    LIB = '1.0.0'
+    V4 = 'https://online.atol.ru/possystem/v4'
+    V5 = 'https://online.atol.ru/possystem/v5'
+
+    V4_TEST = 'https://testonline.atol.ru/possystem/v4'
+    V5_TEST = 'https://testonline.atol.ru/possystem/v5'
+
+    LIB = '1.1.0'
   end
 end

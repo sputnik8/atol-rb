@@ -3,12 +3,14 @@
 require 'atol'
 require 'atol/errors'
 require 'atol/request/post_document/item/body'
+require 'atol/request/post_document/item/v4/body'
+require 'atol/request/post_document/item/v5/body'
 require 'atol/request/post_document/sell/body'
 
 module Atol
   module Request
     class PostDocument
-      OPERATIONS = %i[sell sell_refund sell_correction buy buy_refund buy_correction].freeze
+      OPERATIONS = %i[sell sell_refund sell_correction sell_refund_correction buy buy_refund buy_correction buy_refund_correction].freeze
       HEADERS = { 'Content-Type' => 'application/json; charset=utf-8' }.freeze
 
       def initialize(operation:, token:, body:, config: nil, req_logger: nil, res_logger: nil)
