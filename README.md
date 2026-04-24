@@ -5,7 +5,7 @@
 
 # atol-rb
 
-Пакет содержит набор классов для работы с [KaaS-сервисом АТОЛ-онлайн](https://online.atol.ru/) по [описанному протоколу](https://atol.online/upload/iblock/dff/4yjidqijkha10vmw9ee1jjqzgr05q8jy/API_atol_online_v4.pdf).
+Пакет содержит набор классов для работы с [KaaS-сервисом АТОЛ-онлайн](https://online.atol.ru/) по описанному протоколу: [v4](https://atol.online/upload/iblock/dff/4yjidqijkha10vmw9ee1jjqzgr05q8jy/API_atol_online_v4.pdf) и [v5 (ФФД 1.2)](https://atol.online/upload/iblock/c23/q1o62ixkhvgxx413hpo0eaptkf6k5hrk/API%20%D1%81%D0%B5%D1%80%D0%B2%D0%B8%D1%81%D0%B0%20%D0%90%D0%A2%D0%9E%D0%9B%20%D0%9E%D0%BD%D0%BB%D0%B0%D0%B9%D0%BD_v5.pdf).
 
 ##### Совместимость
 
@@ -45,7 +45,7 @@ Rails.application.config.after_initialize do
     config.default_tax          = 'vat18'
     config.callback_url         = 'https://www.example.com/callback_path'
     config.company_email        = 'example@email.com'
-    config.default_payment_type = '1' # тэг 1031
+    config.default_payment_type = 1 # receipt.payments[].type: 0 — наличные (ФФД тег 1031), 1 — безналичные (ФФД тег 1081)
     config.api_url              = 'https://online.atol.ru/possystem/v5' # по умолчанию 'https://online.atol.ru/possystem/v4' ФФД 1.05
     config.internet             = true # тэг 1125, по умолчанию false
   end
@@ -62,7 +62,7 @@ URL тестовой среды необходимо указывать в ко�
 
 ```bash
 # .env
-ATOL_API_URL=https://testonline.atol.ru/possystem/v4
+ATOL_API_URL=https://testonline.atol.ru/possystem/v5
 ```
 
 > _Внимание! При создании чеков в тестовой среде АТОЛ будет отправлять письма на электронную почту покупателя._
@@ -108,13 +108,13 @@ body = Atol::Request::PostDocument::Sell::Body.new(
 ).to_json
 ```
 
-`agent_info_type` опциональный аргумент - признак агента (тег ФФД - 1057)
+`agent_info_type` — опциональный аргумент: признак агента по предмету расчёта (тег ФФД 1222).
 
 Массив `items` должен включать в себя объекты, которые так же соответствуют схеме.
 
 #### Items для версии V4
 
-Для создания `items` можно использовать класс `Atol::Request::PostDocument::Item::Body`.
+Для создания `items` можно использовать класс `Atol::Request::PostDocument::Item::Body` — он автоматически выбирает реализацию под v4/v5 по `config.api_url` (или `Atol.config.api_url`).
 
 Его конструктор принимает обязательные аргументы `name`, `price`, `payment_method`, `payment_object` и опциональные `quantity` (по умолчанию 1), `supplier_info_inn`, `supplier_info_name`, `agent_info_type` (тег ФФД - 1222).
 

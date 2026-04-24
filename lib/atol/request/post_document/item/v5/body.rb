@@ -74,7 +74,7 @@ module Atol
             end
 
             def supplier_info
-              return if supplier_info_inn.nil? || supplier_info_inn.empty? || agent_info.nil?
+              return if supplier_info_inn.nil? || supplier_info_inn.empty?
 
               info = { inn: supplier_info_inn, name: supplier_info_name }
               filtered_info = info.reject { |_key, value| value&.empty? }

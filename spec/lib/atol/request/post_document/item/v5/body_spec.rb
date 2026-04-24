@@ -130,6 +130,9 @@ RSpec.describe Atol::Request::PostDocument::Item::V5::Body do
   context "when agent_info_type nil" do
     before { params[:agent_info_type] = nil }
 
-    it { expect(body_hash[:supplier_info]).to be_nil }
+    it 'omits agent_info but includes supplier_info', :aggregate_failures do
+      expect(body_hash).not_to have_key(:agent_info)
+      expect(body_hash[:supplier_info]).to eq(inn: '10101964', name: "ООО 'Моя Оборона'")
+    end
   end
 end
