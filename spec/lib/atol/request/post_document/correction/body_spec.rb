@@ -9,15 +9,18 @@ RSpec.describe Atol::Request::PostDocument::Correction::Body do
   let(:params) do
     {
       external_id: external_id,
+      email: email,
       items: items,
       payments: payments,
       correction_type: correction_type,
       base_date: base_date,
       base_number: base_number,
-      config: config
+      config: config,
+      additional_check_props: 'ФПД123456'
     }
   end
   let(:external_id) { '123' }
+  let(:email) { 'client@example.com' }
   let(:items) { [{ sum: 10 }, { sum: 5 }] }
   let(:payments) { [Atol::Request::PostDocument::Payment.new(type: 2, sum: 15.0)] }
   let(:correction_type) { 'self' }
@@ -27,6 +30,14 @@ RSpec.describe Atol::Request::PostDocument::Correction::Body do
 
   describe '#new' do
     it { is_expected.to be_a(Atol::Request::PostDocument::Correction::Body) }
+
+    context 'when both phone and email are empty' do
+      let(:email) { '' }
+
+      it 'raises EmptyClientContactError' do
+        expect { body }.to raise_error(Atol::EmptyClientContactError)
+      end
+    end
 
     context 'when items are empty' do
       let(:items) { [] }
@@ -60,6 +71,14 @@ RSpec.describe Atol::Request::PostDocument::Correction::Body do
       end
     end
 
+    context 'when additional_check_props is longer than 16 characters' do
+      let(:params) { super().merge(additional_check_props: 'x' * 17) }
+
+      it 'raises BadAdditionalCheckPropsError' do
+        expect { body }.to raise_error(described_class::BadAdditionalCheckPropsError)
+      end
+    end
+
     context 'when a payment is not a Payment instance' do
       let(:payments) { [{ type: 2, sum: 15.0 }] }
 
@@ -89,6 +108,7 @@ RSpec.describe Atol::Request::PostDocument::Correction::Body do
         is_expected.to eq(
           external_id: '123',
           correction: {
+            client: { email: 'client@example.com' },
             company: {
               inn: 'example_inn',
               sno: :example_default_sno,
@@ -98,7 +118,8 @@ RSpec.describe Atol::Request::PostDocument::Correction::Body do
             correction_info: { type: 'self', base_date: '01.01.2026', base_number: '12345' },
             items: [{ sum: 10 }, { sum: 5 }],
             payments: [{ type: 2, sum: 15.0 }],
-            total: 15
+            total: 15,
+            internet: false
           },
           service: {},
           timestamp: timestamp.strftime('%d.%m.%Y %H:%M:%S')
@@ -119,6 +140,30 @@ RSpec.describe Atol::Request::PostDocument::Correction::Body do
 
       it 'builds a single default payment from config with the items total' do
         expect(body_hash[:correction][:payments]).to eq([{ sum: 15, type: 1 }])
+      end
+    end
+
+    context 'when a phone is passed' do
+      let(:params) { super().merge(phone: '+79161234567') }
+
+      it 'puts the phone into the client block' do
+        expect(body_hash[:correction][:client]).to eq(email: 'client@example.com', phone: '+79161234567')
+      end
+    end
+
+    context 'when internet is enabled in config' do
+      let(:config) do
+        Atol::Config::Factory.example.tap { |example| example.internet = true }
+      end
+
+      it 'reflects config.internet in the correction body' do
+        expect(body_hash[:correction][:internet]).to be true
+      end
+    end
+
+    context 'when additional_check_props is not passed' do
+      it 'omits additional_check_props from the correction body' do
+        expect(body_hash[:correction]).not_to have_key(:additional_check_props)
       end
     end
 
