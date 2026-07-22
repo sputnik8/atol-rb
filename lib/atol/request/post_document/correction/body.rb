@@ -6,11 +6,22 @@ require 'atol/request/post_document/payment'
 module Atol
   module Request
     class PostDocument
-      module Sell
+      module Correction
         class Body
-          def initialize(external_id:, phone: '', email: '', items:, payments: nil, config: nil, **options)
-            raise(Atol::EmptyClientContactError) if phone.empty? && email.empty?
+          class BadCorrectionTypeError < StandardError; end
+          class BadCorrectionBaseDateError < StandardError; end
+          class BadCorrectionBaseNumberError < StandardError; end
+
+          CORRECTION_TYPES = %w[self instruction].freeze
+          BASE_DATE_FORMAT = /\A\d{2}\.\d{2}\.\d{4}\z/
+          BASE_NUMBER_MAX_LENGTH = 32
+
+          def initialize(external_id:, items:, correction_type:, base_date:,
+                         payments: nil, base_number: nil, config: nil, **options)
             raise(Atol::EmptySellItemsError) if items.empty?
+            raise(BadCorrectionTypeError) unless CORRECTION_TYPES.include?(correction_type)
+            raise(BadCorrectionBaseDateError) unless base_date.to_s.match?(BASE_DATE_FORMAT)
+            raise(BadCorrectionBaseNumberError) if base_number && base_number.to_s.length > BASE_NUMBER_MAX_LENGTH
             unless payments.nil?
               raise(Atol::EmptyPaymentsError) if payments.empty?
               raise(Atol::BadPaymentError) if payments.any? { |payment| !payment.is_a?(Payment) }
@@ -18,9 +29,10 @@ module Atol
 
             @config = config || Atol.config
             @external_id = external_id
-            @phone = phone
-            @email = email
             @items = items
+            @correction_type = correction_type
+            @base_date = base_date
+            @base_number = base_number
             @total = items.sum { |item| item[:sum] }
             @payments = payments
           end
@@ -35,30 +47,21 @@ module Atol
 
           private
 
-          attr_reader :config, :external_id, :phone, :email, :items, :payments, :total
+          attr_reader :config, :external_id, :items, :payments, :correction_type, :base_date, :base_number, :total
 
           def build_body
             {
               external_id: external_id,
-              receipt: {
-                client: client,
+              correction: {
                 company: company,
+                correction_info: correction_info,
                 items: items,
                 payments: build_payments,
-                total: total,
-                internet: config.internet
+                total: total
               },
               service: service,
               timestamp: Time.now.strftime(Atol::TIMESTAMP_FORMAT)
             }
-          end
-
-          def client
-            result = {}
-            result[:email] = email unless email.empty?
-            result[:phone] = phone unless phone.empty?
-
-            result
           end
 
           def company
@@ -76,6 +79,13 @@ module Atol
 
           def service
             config.callback_url ? { callback_url: config.callback_url } : {}
+          end
+
+          def correction_info
+            info = { type: correction_type, base_date: base_date }
+            info[:base_number] = base_number if base_number
+
+            info
           end
         end
       end
