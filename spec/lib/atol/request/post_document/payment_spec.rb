@@ -15,7 +15,7 @@ RSpec.describe Atol::Request::PostDocument::Payment do
       let(:type) { 10 }
 
       it 'raises BadPaymentError' do
-        expect { payment }.to raise_error(Atol::BadPaymentError)
+        expect { payment }.to raise_error(Atol::BadPaymentError, 'not allowed type')
       end
     end
 
@@ -23,16 +23,22 @@ RSpec.describe Atol::Request::PostDocument::Payment do
       let(:sum) { '15' }
 
       it 'raises BadPaymentError' do
-        expect { payment }.to raise_error(Atol::BadPaymentError)
+        expect { payment }.to raise_error(Atol::BadPaymentError, 'sum must be zero or a positive number')
       end
     end
 
-    context 'when sum is not positive' do
-      let(:sum) { 0 }
+    context 'when sum is negative' do
+      let(:sum) { -1 }
 
       it 'raises BadPaymentError' do
-        expect { payment }.to raise_error(Atol::BadPaymentError)
+        expect { payment }.to raise_error(Atol::BadPaymentError, 'sum must be zero or a positive number')
       end
+    end
+
+    context 'when sum is zero' do
+      let(:sum) { 0 }
+
+      it { expect { payment }.not_to raise_error }
     end
   end
 
