@@ -276,11 +276,11 @@ Atol::Request::PostDocument::Sell::Body.new(
 
 Виды оплаты (`type`) — константы класса `Atol::Request::PostDocument::Payment`: `CASH_TYPE` наличные (1031), `CASHLESS_TYPE` безналичный (1081), `PREPAID_TYPE` предоплата/зачёт аванса (1215), `POSTPAID_TYPE` постоплата/кредит (1216), `COUNTER_PROVISION_TYPE` встречное предоставление (1217), `EXTENDED_5_TYPE`–`EXTENDED_9_TYPE` расширенные.
 
-#### Чек коррекции
+#### Чек коррекции для версии V5
 
-Для тела чека коррекции по ФФД 1.2 (операции `sell_refund_correction`, `sell_correction` и т.п.) используется класс `Atol::Request::PostDocument::Correction::V5::Body`. Документ коррекции по ФФД 1.05 (v4) имеет другую схему (без `client`/`items`/`total`, с обязательным `vat`) и здесь не реализован. В отличие от продажи, тело оборачивается в `correction` и содержит блок `correction_info`. Признак расчёта в «Интернет» (тег 1125) берётся из конфигурации (`config.internet`), как и в `Sell::Body`; данные клиента (`phone`/`email`) передаются так же, как в продаже (при `internet = true` они обязательны по ФФД 1.2).
+Для тела чека коррекции по ФФД 1.2 (операции `sell_refund_correction`, `sell_correction` и т.п.) используется класс `Atol::Request::PostDocument::Correction::V5::Body`.
 
-Обязательные аргументы: `external_id`, `items`, `correction_type` (`self` или `instruction`) и `base_date` (дата корректируемого расчёта в формате `dd.mm.yyyy`, тег 1178), а также хотя бы один контакт клиента — `phone` или `email`. Необязательные: `base_number` — номер документа-основания (тег 1179, не более 32 байт); `additional_check_props` — дополнительный реквизит чека/БСО (тег 1192, не более 16 байт — кириллица в UTF-8 занимает 2 байта на символ); и `payments` (как и в `Sell::Body`, при отсутствии формируется один платёж из `default_payment_type` с суммой, равной итогу позиций; переданная сумма платежей должна совпадать с итогом позиций).
+Обязательные аргументы: `external_id`, `items`, `correction_type` (`self` или `instruction`) и `base_date` (дата корректируемого расчёта в формате `dd.mm.yyyy`, тег 1178), а также хотя бы один контакт клиента — `phone` или `email`. Необязательные: `base_number` — номер документа-основания (тег 1179, не более 32 байт); `additional_check_props` — дополнительный реквизит чека/БСО (тег 1192, не более 16 байт); и `payments` (как и в `Sell::Body`, при отсутствии формируется один платёж из `default_payment_type` с суммой, равной итогу позиций; переданная сумма платежей должна совпадать с итогом позиций).
 
 ```ruby
 body = Atol::Request::PostDocument::Correction::V5::Body.new(
