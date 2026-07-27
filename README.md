@@ -262,8 +262,8 @@ Atol::Request::PostDocument::Sell::Body.new(
 ```ruby
 payments = [
   Atol::Request::PostDocument::Payment.new(
-    type: Atol::Request::PostDocument::Payment::CASH_TYPE,
-    sum: 100.0
+    type: Atol::Request::PostDocument::Payment::PREPAID_TYPE,
+    sum: 200.0
   )
 ]
 Atol::Request::PostDocument::Sell::Body.new(
