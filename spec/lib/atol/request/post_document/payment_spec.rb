@@ -26,6 +26,14 @@ RSpec.describe Atol::Request::PostDocument::Payment do
         expect { payment }.to raise_error(Atol::BadPaymentError)
       end
     end
+
+    context 'when sum is not positive' do
+      let(:sum) { 0 }
+
+      it 'raises BadPaymentError' do
+        expect { payment }.to raise_error(Atol::BadPaymentError)
+      end
+    end
   end
 
   describe '#to_h' do

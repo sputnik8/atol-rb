@@ -257,7 +257,7 @@ Atol::Request::PostDocument::Sell::Body.new(
 
 #### Кастомные payments
 
-По умолчанию `Sell::Body` формирует один платёж с типом из конфигурации (`default_payment_type`) и суммой, равной итогу позиций. Если нужны другие виды оплаты (например, зачёт аванса — тег 1215, тип `2`), можно передать массив объектов `Atol::Request::PostDocument::Payment` явно.
+По умолчанию `Sell::Body` формирует один платёж с типом из конфигурации (`default_payment_type`) и суммой, равной итогу позиций. Если нужны другие виды оплаты (например, зачёт аванса — тег 1215, тип `2`), можно передать массив объектов `Atol::Request::PostDocument::Payment` явно. Сумма платежей должна совпадать с итогом позиций, иначе конструктор бросит `Atol::PaymentsTotalMismatchError`.
 
 ```ruby
 payments = [
@@ -278,12 +278,12 @@ Atol::Request::PostDocument::Sell::Body.new(
 
 #### Чек коррекции
 
-Для тела чека коррекции (операции `sell_refund_correction`, `sell_correction` и т.п.) используется класс `Atol::Request::PostDocument::Correction::Body`. В отличие от продажи, тело оборачивается в `correction` и содержит блок `correction_info`. Признак расчёта в «Интернет» (тег 1125) берётся из конфигурации (`config.internet`), как и в `Sell::Body`; данные клиента (`phone`/`email`) передаются так же, как в продаже (при `internet = true` они обязательны по ФФД 1.2).
+Для тела чека коррекции по ФФД 1.2 (операции `sell_refund_correction`, `sell_correction` и т.п.) используется класс `Atol::Request::PostDocument::Correction::V5::Body`. Документ коррекции по ФФД 1.05 (v4) имеет другую схему (без `client`/`items`/`total`, с обязательным `vat`) и здесь не реализован. В отличие от продажи, тело оборачивается в `correction` и содержит блок `correction_info`. Признак расчёта в «Интернет» (тег 1125) берётся из конфигурации (`config.internet`), как и в `Sell::Body`; данные клиента (`phone`/`email`) передаются так же, как в продаже (при `internet = true` они обязательны по ФФД 1.2).
 
-Обязательные аргументы: `external_id`, `items`, `correction_type` (`self` или `instruction`) и `base_date` (дата корректируемого расчёта в формате `dd.mm.yyyy`, тег 1178), а также хотя бы один контакт клиента — `phone` или `email`. Необязательные: `base_number` — номер документа-основания (тег 1179); `additional_check_props` — дополнительный реквизит чека/БСО (тег 1192, не более 16 символов); и `payments` (как и в `Sell::Body`, при отсутствии формируется один платёж из `default_payment_type` с суммой, равной итогу позиций).
+Обязательные аргументы: `external_id`, `items`, `correction_type` (`self` или `instruction`) и `base_date` (дата корректируемого расчёта в формате `dd.mm.yyyy`, тег 1178), а также хотя бы один контакт клиента — `phone` или `email`. Необязательные: `base_number` — номер документа-основания (тег 1179, не более 32 байт); `additional_check_props` — дополнительный реквизит чека/БСО (тег 1192, не более 16 байт — кириллица в UTF-8 занимает 2 байта на символ); и `payments` (как и в `Sell::Body`, при отсутствии формируется один платёж из `default_payment_type` с суммой, равной итогу позиций; переданная сумма платежей должна совпадать с итогом позиций).
 
 ```ruby
-body = Atol::Request::PostDocument::Correction::Body.new(
+body = Atol::Request::PostDocument::Correction::V5::Body.new(
   external_id: 123,
   email: 'example@example.com',
   items: [...],

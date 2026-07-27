@@ -25,7 +25,7 @@ module Atol
         attr_reader :type, :sum
 
         def initialize(type:, sum:)
-          raise(Atol::BadPaymentError) unless TYPES.include?(type) && sum.is_a?(Numeric)
+          raise(Atol::BadPaymentError) unless TYPES.include?(type) && sum.is_a?(Numeric) && sum.positive?
 
           @type = type
           @sum = sum

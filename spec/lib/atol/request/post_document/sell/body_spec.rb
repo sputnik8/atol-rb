@@ -24,6 +24,12 @@ RSpec.describe Atol::Request::PostDocument::Sell::Body do
       params = Hash[external_id: '123456', phone: '123456789', items: [{ sum: 10 }], payments: [{ type: 1, sum: 10 }]]
       expect { described_class.new(**params) }.to raise_error(Atol::BadPaymentError)
     end
+
+    it 'raise error when payments sum does not match items total' do
+      payment = Atol::Request::PostDocument::Payment.new(type: 2, sum: 99.0)
+      params = Hash[external_id: '123456', phone: '123456789', items: [{ sum: 10 }], payments: [payment]]
+      expect { described_class.new(**params) }.to raise_error(Atol::PaymentsTotalMismatchError)
+    end
   end
 
   describe '#to_h' do

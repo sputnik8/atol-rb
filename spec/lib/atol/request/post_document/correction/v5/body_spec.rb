@@ -1,9 +1,9 @@
 # frozen_string_literal: true
 
 require './lib/atol'
-require './lib/atol/request/post_document/correction/body'
+require './lib/atol/request/post_document/correction/v5/body'
 
-RSpec.describe Atol::Request::PostDocument::Correction::Body do
+RSpec.describe Atol::Request::PostDocument::Correction::V5::Body do
   subject(:body) { described_class.new(**params) }
 
   let(:params) do
@@ -16,7 +16,7 @@ RSpec.describe Atol::Request::PostDocument::Correction::Body do
       base_date: base_date,
       base_number: base_number,
       config: config,
-      additional_check_props: 'ФПД123456'
+      additional_check_props: additional_check_props
     }
   end
   let(:external_id) { '123' }
@@ -26,10 +26,11 @@ RSpec.describe Atol::Request::PostDocument::Correction::Body do
   let(:correction_type) { 'self' }
   let(:base_date) { '01.01.2026' }
   let(:base_number) { '12345' }
+  let(:additional_check_props) { 'ФПД123456' }
   let(:config) { Atol::Config::Factory.example }
 
   describe '#new' do
-    it { is_expected.to be_a(Atol::Request::PostDocument::Correction::Body) }
+    it { is_expected.to be_a(described_class) }
 
     context 'when both phone and email are empty' do
       let(:email) { '' }
@@ -63,7 +64,7 @@ RSpec.describe Atol::Request::PostDocument::Correction::Body do
       end
     end
 
-    context 'when base number is longer than 32 characters' do
+    context 'when base number is longer than 32 bytes' do
       let(:base_number) { 'x' * 33 }
 
       it 'raises BadCorrectionBaseNumberError' do
@@ -71,8 +72,16 @@ RSpec.describe Atol::Request::PostDocument::Correction::Body do
       end
     end
 
-    context 'when additional_check_props is longer than 16 characters' do
-      let(:params) { super().merge(additional_check_props: 'x' * 17) }
+    context 'when additional_check_props is longer than 16 bytes' do
+      let(:additional_check_props) { 'x' * 17 }
+
+      it 'raises BadAdditionalCheckPropsError' do
+        expect { body }.to raise_error(described_class::BadAdditionalCheckPropsError)
+      end
+    end
+
+    context 'when additional_check_props exceeds 16 bytes with multibyte characters' do
+      let(:additional_check_props) { 'ЁЁЁЁЁЁЁЁЁ' }
 
       it 'raises BadAdditionalCheckPropsError' do
         expect { body }.to raise_error(described_class::BadAdditionalCheckPropsError)
@@ -92,6 +101,14 @@ RSpec.describe Atol::Request::PostDocument::Correction::Body do
 
       it 'raises EmptyPaymentsError' do
         expect { body }.to raise_error(Atol::EmptyPaymentsError)
+      end
+    end
+
+    context 'when payments sum does not match items total' do
+      let(:payments) { [Atol::Request::PostDocument::Payment.new(type: 2, sum: 99.0)] }
+
+      it 'raises PaymentsTotalMismatchError' do
+        expect { body }.to raise_error(Atol::PaymentsTotalMismatchError)
       end
     end
   end
@@ -119,7 +136,8 @@ RSpec.describe Atol::Request::PostDocument::Correction::Body do
             items: [{ sum: 10 }, { sum: 5 }],
             payments: [{ type: 2, sum: 15.0 }],
             total: 15,
-            internet: false
+            internet: false,
+            additional_check_props: 'ФПД123456'
           },
           service: {},
           timestamp: timestamp.strftime('%d.%m.%Y %H:%M:%S')
@@ -162,6 +180,8 @@ RSpec.describe Atol::Request::PostDocument::Correction::Body do
     end
 
     context 'when additional_check_props is not passed' do
+      let(:additional_check_props) { nil }
+
       it 'omits additional_check_props from the correction body' do
         expect(body_hash[:correction]).not_to have_key(:additional_check_props)
       end

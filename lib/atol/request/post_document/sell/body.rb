@@ -11,17 +11,16 @@ module Atol
           def initialize(external_id:, phone: '', email: '', items:, payments: nil, config: nil, **options)
             raise(Atol::EmptyClientContactError) if phone.empty? && email.empty?
             raise(Atol::EmptySellItemsError) if items.empty?
-            unless payments.nil?
-              raise(Atol::EmptyPaymentsError) if payments.empty?
-              raise(Atol::BadPaymentError) if payments.any? { |payment| !payment.is_a?(Payment) }
-            end
+
+            total = items.sum { |item| item[:sum] }
+            validate_payments!(payments, total)
 
             @config = config || Atol.config
             @external_id = external_id
             @phone = phone
             @email = email
             @items = items
-            @total = items.sum { |item| item[:sum] }
+            @total = total
             @payments = payments
           end
 
@@ -36,6 +35,14 @@ module Atol
           private
 
           attr_reader :config, :external_id, :phone, :email, :items, :payments, :total
+
+          def validate_payments!(payments, total)
+            return if payments.nil?
+
+            raise(Atol::EmptyPaymentsError) if payments.empty?
+            raise(Atol::BadPaymentError) if payments.any? { |payment| !payment.is_a?(Payment) }
+            raise(Atol::PaymentsTotalMismatchError) unless payments.sum(&:sum).round(2) == total.round(2)
+          end
 
           def build_body
             {
