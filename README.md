@@ -278,12 +278,12 @@ Atol::Request::PostDocument::Sell::Body.new(
 
 #### Чек коррекции для версии V5
 
-Для тела чека коррекции по ФФД 1.2 (операции `sell_refund_correction`, `sell_correction` и т.п.) используется класс `Atol::Request::PostDocument::Correction::V5::Body`.
+Для тела чека коррекции используется класс `Atol::Request::PostDocument::Correction::Body` — он выбирает реализацию по `config.api_url`, как и `Item::Body`. Реализован только ФФД 1.2 (`Correction::V5::Body`, операции `sell_refund_correction`, `sell_correction` и т.п.); для v4-эндпоинта (ФФД 1.05) тело коррекции не реализовано и конструктор бросит `Atol::Request::PostDocument::Correction::Body::BadApiUrlError`.
 
 Обязательные аргументы: `external_id`, `items`, `correction_type` (`self` или `instruction`) и `base_date` (дата корректируемого расчёта в формате `dd.mm.yyyy`, тег 1178), а также хотя бы один контакт клиента — `phone` или `email`. Необязательные: `base_number` — номер документа-основания (тег 1179, не более 32 байт); `additional_check_props` — дополнительный реквизит чека/БСО (тег 1192, не более 16 байт); и `payments` (как и в `Sell::Body`, при отсутствии формируется один платёж из `default_payment_type` с суммой, равной итогу позиций; переданная сумма платежей должна совпадать с итогом позиций).
 
 ```ruby
-body = Atol::Request::PostDocument::Correction::V5::Body.new(
+body = Atol::Request::PostDocument::Correction::Body.new(
   external_id: 123,
   email: 'example@example.com',
   items: [...],
