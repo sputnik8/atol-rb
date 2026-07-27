@@ -18,6 +18,8 @@ module Atol
   class StateMissingUuidError < StandardError; end
   class StateNotFoundError < StandardError; end
   class ZeroItemQuantityError < StandardError; end
+  class BadPaymentError < StandardError; end
+  class EmptyPaymentsError < StandardError; end
 
   ERRORS = Hash[
       0 => BadJSONError,

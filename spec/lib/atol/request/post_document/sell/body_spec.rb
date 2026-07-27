@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+require './lib/atol'
 require './lib/atol/request/post_document/sell/body'
 
 RSpec.describe Atol::Request::PostDocument::Sell::Body do
@@ -12,6 +13,16 @@ RSpec.describe Atol::Request::PostDocument::Sell::Body do
     it 'raise error when items empty' do
       params = Hash[external_id: '123456', phone: '123456789', items: []]
       expect { described_class.new(**params) }.to raise_error(Atol::EmptySellItemsError)
+    end
+
+    it 'raise error when payments is an empty array' do
+      params = Hash[external_id: '123456', phone: '123456789', items: [{ sum: 10 }], payments: []]
+      expect { described_class.new(**params) }.to raise_error(Atol::EmptyPaymentsError)
+    end
+
+    it 'raise error when a payment is not a Payment instance' do
+      params = Hash[external_id: '123456', phone: '123456789', items: [{ sum: 10 }], payments: [{ type: 1, sum: 10 }]]
+      expect { described_class.new(**params) }.to raise_error(Atol::BadPaymentError)
     end
   end
 
@@ -93,6 +104,52 @@ RSpec.describe Atol::Request::PostDocument::Sell::Body do
       params[:config].callback_url = 'url'
       expect(body_hash[:service].keys).to include :callback_url
       expect(body_hash[:service][:callback_url]).to eql 'url'
+    end
+
+    it 'builds body identical to the default schema when payments are not passed' do
+      expect(body_hash).to eq(
+        external_id: '123',
+        receipt: {
+          client: { email: 'email@example.com', phone: '123456' },
+          company: {
+            inn: 'example_inn',
+            sno: :example_default_sno,
+            payment_address: :example_payment_address,
+            email: nil
+          },
+          items: [{ sum: 10 }, { sum: 5 }],
+          payments: [{ sum: 15, type: 1 }],
+          total: 15,
+          internet: false
+        },
+        service: {},
+        timestamp: timestamp.strftime('%d.%m.%Y %H:%M:%S')
+      )
+    end
+  end
+
+  describe '#to_h with custom params' do
+    let(:timestamp) { Time.now }
+    let(:params) do
+      Hash[
+        external_id: '123',
+        email: 'email@example.com',
+        items: [{ sum: 10 }, { sum: 5 }],
+        payments: [Atol::Request::PostDocument::Payment.new(type: 2, sum: 15.0)],
+        config: Atol::Config::Factory.example
+      ]
+    end
+
+    before { allow(Time).to receive(:now).and_return(timestamp) }
+
+    let(:body_hash) { described_class.new(**params).to_h }
+
+    it 'puts passed payments into receipt as is' do
+      expect(body_hash[:receipt][:payments]).to eq([{ type: 2, sum: 15.0 }])
+    end
+
+    it 'still calculates total from items' do
+      expect(body_hash[:receipt][:total]).to eql 15
     end
   end
 end

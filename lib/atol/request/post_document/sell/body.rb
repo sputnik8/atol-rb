@@ -1,82 +1,81 @@
 # frozen_string_literal: true
 
 require 'atol/errors'
+require 'atol/request/post_document/payment'
 
 module Atol
   module Request
     class PostDocument
       module Sell
         class Body
-          def initialize(external_id:, phone: '', email: '', items:, config: nil, **options)
+          def initialize(external_id:, phone: '', email: '', items:, payments: nil, config: nil, **options)
             raise(Atol::EmptyClientContactError) if phone.empty? && email.empty?
             raise(Atol::EmptySellItemsError) if items.empty?
+            unless payments.nil?
+              raise(Atol::EmptyPaymentsError) if payments.empty?
+              raise(Atol::BadPaymentError) if payments.any? { |payment| !payment.is_a?(Payment) }
+            end
 
             @config = config || Atol.config
             @external_id = external_id
             @phone = phone
             @email = email
             @items = items
+            @total = items.sum { |item| item[:sum] }
+            @payments = payments
           end
 
           def to_h
-            body.clone
+            build_body.clone
           end
 
           def to_json(*_args)
-            body.to_json
+            build_body.to_json
           end
 
           private
 
-          def body
-            body_template.tap do |result|
-              receipt = result[:receipt]
-              client = receipt[:client]
+          attr_reader :config, :external_id, :phone, :email, :items, :payments, :total
 
-              result[:external_id] = @external_id
-              result[:service][:callback_url] = @config.callback_url if @config.callback_url
-
-              add_client_data(client)
-              add_receipt_data(receipt)
-            end
-          end
-
-          def body_template
+          def build_body
             {
+              external_id: external_id,
               receipt: {
-                client: {},
-                company: {
-                  inn: @config.inn.to_s,
-                  sno: @config.default_sno,
-                  payment_address: @config.payment_address,
-                  email: @config.company_email
-                },
-                items: [],
-                payments: [
-                  {
-                    sum: 0,
-                    type: @config.default_payment_type
-                  }
-                ]
+                client: client,
+                company: company,
+                items: items,
+                payments: build_payments,
+                total: total,
+                internet: config.internet
               },
-              service: {},
+              service: service,
               timestamp: Time.now.strftime(Atol::TIMESTAMP_FORMAT)
             }
           end
 
-          def add_client_data(client)
-            client[:email] = @email unless @email.empty?
-            client[:phone] = @phone unless @phone.empty?
+          def client
+            result = {}
+            result[:email] = email unless email.empty?
+            result[:phone] = phone unless phone.empty?
+
+            result
           end
 
-          def add_receipt_data(receipt)
-            receipt[:total] = receipt[:payments][0][:sum] = total
-            receipt[:items] = @items
-            receipt[:internet] = @config.internet
+          def company
+            {
+              inn: config.inn.to_s,
+              sno: config.default_sno,
+              payment_address: config.payment_address,
+              email: config.company_email
+            }
           end
 
-          def total
-            @total ||= @items.inject(0) { |sum, item| sum += item[:sum] }
+          def build_payments
+            (payments || [Payment.new(type: config.default_payment_type, sum: total)]).map(&:to_h)
+          end
+
+          def service
+            config.callback_url ? { callback_url: config.callback_url } : {}
           end
         end
       end

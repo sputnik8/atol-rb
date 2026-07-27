@@ -255,6 +255,46 @@ Atol::Request::PostDocument::Sell::Body.new(
 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23
 ```
 
+#### Кастомные payments
+
+По умолчанию `Sell::Body` формирует один платёж с типом из конфигурации (`default_payment_type`) и суммой, равной итогу позиций. Если нужны другие виды оплаты (например, зачёт аванса — тег 1215, тип `2`), можно передать массив объектов `Atol::Request::PostDocument::Payment` явно.
+
+```ruby
+payments = [
+  Atol::Request::PostDocument::Payment.new(
+    type: Atol::Request::PostDocument::Payment::CASH_TYPE,
+    sum: 100.0
+  )
+]
+Atol::Request::PostDocument::Sell::Body.new(
+  external_id: 123,
+  email: 'example@example.com',
+  items: [item],
+  payments: payments
+).to_json
+```
+
+Виды оплаты (`type`) — константы класса `Atol::Request::PostDocument::Payment`: `CASH_TYPE` наличные (1031), `CASHLESS_TYPE` безналичный (1081), `PREPAID_TYPE` предоплата/зачёт аванса (1215), `POSTPAID_TYPE` постоплата/кредит (1216), `COUNTER_PROVISION_TYPE` встречное предоставление (1217), `EXTENDED_5_TYPE`–`EXTENDED_9_TYPE` расширенные.
+
+#### Чек коррекции
+
+Для тела чека коррекции (операции `sell_refund_correction`, `sell_correction` и т.п.) используется класс `Atol::Request::PostDocument::Correction::Body`. В отличие от продажи, тело оборачивается в `correction` и содержит блок `correction_info`. Признак расчёта в «Интернет» (тег 1125) берётся из конфигурации (`config.internet`), как и в `Sell::Body`; данные клиента (`phone`/`email`) передаются так же, как в продаже (при `internet = true` они обязательны по ФФД 1.2).
+
+Обязательные аргументы: `external_id`, `items`, `correction_type` (`self` или `instruction`) и `base_date` (дата корректируемого расчёта в формате `dd.mm.yyyy`, тег 1178), а также хотя бы один контакт клиента — `phone` или `email`. Необязательные: `base_number` — номер документа-основания (тег 1179); `additional_check_props` — дополнительный реквизит чека/БСО (тег 1192, не более 16 символов); и `payments` (как и в `Sell::Body`, при отсутствии формируется один платёж из `default_payment_type` с суммой, равной итогу позиций).
+
+```ruby
+body = Atol::Request::PostDocument::Correction::Body.new(
+  external_id: 123,
+  email: 'example@example.com',
+  items: [...],
+  correction_type: 'self',
+  base_date: '01.01.2026',
+  base_number: '12345'
+).to_json
+
+Atol::Transaction::PostDocument.new(operation: :sell_refund_correction, token: token, body: body).call
+```
+
 #### Отправка документа
 
 Когда токен и тело запроса составлены, остается только сделать post-запрос.

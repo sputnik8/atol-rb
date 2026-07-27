@@ -12,3 +12,5 @@ Metrics/LineLength:
 Metrics/ParameterLists:
   Exclude:
     - lib/atol/request/post_document/item/body.rb
+    - lib/atol/request/post_document/sell/body.rb
+    - lib/atol/request/post_document/correction/body.rb
