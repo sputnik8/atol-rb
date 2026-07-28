@@ -7,6 +7,7 @@ require 'atol/request/post_document/item/v4/body'
 require 'atol/request/post_document/item/v5/body'
 require 'atol/request/post_document/sell/body'
 require 'atol/request/post_document/correction/body'
+require 'atol/request/post_document/correction/v5/body'
 
 module Atol
   module Request

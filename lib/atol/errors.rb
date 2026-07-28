@@ -20,6 +20,7 @@ module Atol
   class ZeroItemQuantityError < StandardError; end
   class BadPaymentError < StandardError; end
   class EmptyPaymentsError < StandardError; end
+  class PaymentsTotalMismatchError < StandardError; end
 
   ERRORS = Hash[
       0 => BadJSONError,
