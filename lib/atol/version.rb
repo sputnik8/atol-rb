@@ -8,6 +8,6 @@ module Atol
     V4_TEST = 'https://testonline.atol.ru/possystem/v4'
     V5_TEST = 'https://testonline.atol.ru/possystem/v5'
 
-    LIB = '1.2.0'
+    LIB = '1.3.0'
   end
 end
